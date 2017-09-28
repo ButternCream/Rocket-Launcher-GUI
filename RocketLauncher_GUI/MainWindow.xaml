@@ -1,0 +1,26 @@
+﻿<Window x:Name="main_window" x:Class="RocketLauncher_GUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RocketLauncher_GUI"
+        mc:Ignorable="d"
+        Title="Rocket Launcher 3.0" Height="147" Width="305">
+    <DockPanel HorizontalAlignment="Stretch">
+        <Menu DockPanel.Dock="Top" VerticalAlignment="Top">
+            <MenuItem x:Name="Rocket_League" Header="Rocket League">
+                <MenuItem x:Name="Start" Header="Start" Click="Start_Click"/>
+                <MenuItem x:Name="Kill" Header="Kill Process" Click="Kill_Click"/>
+            </MenuItem>
+            <MenuItem x:Name="btnSettings" Header="Settings">
+                <MenuItem x:Name="btnAutoLoadMods" Header="Auto Load Mods" IsCheckable="True" Click="btnAutoLoadMods_Clicked"/>
+            </MenuItem>
+            <MenuItem x:Name="btnDonate" Header="Donate" Click="btnDonate_Click"/>
+        </Menu>
+
+        <Label DockPanel.Dock="Bottom" x:Name="lblCreatedBy" Content="Created by ButterandCream, Two, Taylor" FontSize="10"/>
+        <Button DockPanel.Dock="Left" x:Name="btnLoadMods" Width="100" Height="25" Content="Load Mods" Click="btnLoadMods_Click" />
+
+    </DockPanel>
+
+</Window>
