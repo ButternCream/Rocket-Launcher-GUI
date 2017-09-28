@@ -1,7 +1,7 @@
 # Rocket Launcher GUI
 The new GUI for Rocket Launcher
 
-### Current Version: 3.0a
+### Current Version: 3.0
 
 *This repo is **only** for the **GUI interface** of Rocket Launcher.*
 
