@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,6 +28,12 @@ namespace RocketLauncher_GUI
         Thread procWatcher = new Thread(new ThreadStart(GetProcInfo));   
         Thread injectWatcher = new Thread(new ThreadStart(AutoLoadMods));
         volatile static bool abort = false;
+        volatile static bool injected = false;
+
+        [DllImport("Injector.dll", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool Inject();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -108,8 +116,7 @@ namespace RocketLauncher_GUI
                     {
                         Console.WriteLine("Found rocket league for auto injection thread");
                         Thread.Sleep(20000);
-                        DllInjectionResult result = Injector.GetInstance.Inject("RocketLeague", @"RLModding.dll");
-                        if (result == DllInjectionResult.Success)
+                        if (Inject())
                             injected = true;
                         else
                             injected = false;
@@ -125,13 +132,17 @@ namespace RocketLauncher_GUI
             Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XHLHQGAQK2XZG");
         }
 
+        
+
         private void btnLoadMods_Click(object sender, RoutedEventArgs e)
         {
-            if (Process.GetProcessesByName("RocketLeague").Length > 0)
-            {
-                DllInjectionResult result = Injector.GetInstance.Inject("RocketLeague", @"RLModding.dll");
-            }
+            if (!injected && Inject())
+                injected = true;
+            else
+                injected = false;
         }
+
+       
 
         private void btnAutoLoadMods_Clicked(object sender, RoutedEventArgs e)
         {
@@ -165,5 +176,6 @@ namespace RocketLauncher_GUI
                 procs[0].Kill();
             }
         }
+
     }
 }
