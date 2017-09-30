@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PcapDotNet.Core;
+using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Windows.Markup;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace RocketLauncher_GUI
 {
@@ -24,7 +18,7 @@ namespace RocketLauncher_GUI
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        /* Global Vars */
         Thread procWatcher = new Thread(new ThreadStart(GetProcInfo));   
         Thread injectWatcher = new Thread(new ThreadStart(AutoLoadMods));
         volatile static bool abort = false;
@@ -39,6 +33,32 @@ namespace RocketLauncher_GUI
             InitializeComponent();
             LoadSettings();
             RLMenuBarInit();
+            GetDevices();
+        }
+
+        private void GetDevices()
+        {
+            ObservableCollection<string> list = new ObservableCollection<string>();
+            try
+            {
+                foreach (var d in LivePacketDevice.AllLocalMachine)
+                {
+                    string desc = d.Description;
+                    int f = desc.IndexOf('\'', desc.IndexOf('\'') + 1);
+                    Console.WriteLine(f);
+                    list.Add(d.Description.Remove(f).Replace("'", ""));
+                }
+                deviceCombo.ItemsSource = list;
+                if (Properties.Settings.Default.DeviceIndex > -1)
+                {
+                    deviceCombo.SelectedIndex = Properties.Settings.Default.DeviceIndex;
+                }
+            } catch(FileNotFoundException)
+            {
+                return;
+            }
+            
+         
         }
 
         private void RLMenuBarInit()
@@ -177,5 +197,29 @@ namespace RocketLauncher_GUI
             }
         }
 
+        private void deviceCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Properties.Settings.Default.DeviceIndex = deviceCombo.SelectedIndex;
+        }
+
+        private void InterceptDev(object sender, RoutedEventArgs e)
+        {
+            Support_Files.LAN.serverList.Add(IP.Text);
+            if (Properties.Settings.Default.DeviceIndex > -1)
+            {
+                Properties.Settings.Default.Save();
+
+                Thread packets = new Thread(() => Support_Files.LAN.Intercept(Properties.Settings.Default.DeviceIndex));
+                packets.IsBackground = true;
+                packets.Start();
+                Console.WriteLine("Packet thread started!");
+            }
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
+        }
     }
 }

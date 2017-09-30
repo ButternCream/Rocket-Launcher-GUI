@@ -46,5 +46,17 @@ namespace RocketLauncher_GUI.Properties {
                 this["Path"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int DeviceIndex {
+            get {
+                return ((int)(this["DeviceIndex"]));
+            }
+            set {
+                this["DeviceIndex"] = value;
+            }
+        }
     }
 }

@@ -5,22 +5,51 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RocketLauncher_GUI"
         mc:Ignorable="d"
-        Title="Rocket Launcher 3.0" Height="147" Width="305">
-    <DockPanel HorizontalAlignment="Stretch">
-        <Menu DockPanel.Dock="Top" VerticalAlignment="Top">
-            <MenuItem x:Name="Rocket_League" Header="Rocket League">
-                <MenuItem x:Name="Start" Header="Start" Click="Start_Click"/>
-                <MenuItem x:Name="Kill" Header="Kill Process" Click="Kill_Click"/>
-            </MenuItem>
-            <MenuItem x:Name="btnSettings" Header="Settings">
-                <MenuItem x:Name="btnAutoLoadMods" Header="Auto Load Mods" IsCheckable="True" Click="btnAutoLoadMods_Clicked"/>
-            </MenuItem>
-            <MenuItem x:Name="btnDonate" Header="Donate" Click="btnDonate_Click"/>
-        </Menu>
+        Title="Rocket Launcher 3.0" Height="186" Width="305" ResizeMode="NoResize">
 
-        <Label DockPanel.Dock="Bottom" x:Name="lblCreatedBy" Content="Created by ButterandCream, Two, Taylor" FontSize="10"/>
-        <Button DockPanel.Dock="Left" x:Name="btnLoadMods" Width="100" Height="25" Content="Load Mods" Click="btnLoadMods_Click" />
+    <Grid>
+        <DockPanel HorizontalAlignment="Stretch">
+            <DockPanel.Resources>
+                <Style TargetType="{x:Type Menu}">
+                    <Setter Property="Margin" Value="0,0,0,2"/>
+                </Style>
+            </DockPanel.Resources>
+            <Menu DockPanel.Dock="Top" VerticalAlignment="Top" Padding="2">
+                <MenuItem x:Name="Rocket_League" Header="Rocket League">
+                    <MenuItem x:Name="Start" Header="Start" Click="Start_Click"/>
+                    <MenuItem x:Name="Kill" Header="Kill Process" Click="Kill_Click"/>
+                </MenuItem>
+                <MenuItem x:Name="btnSettings" Header="Settings">
+                    <MenuItem x:Name="btnAutoLoadMods" Header="Auto Load Mods" IsCheckable="True" Click="btnAutoLoadMods_Clicked"/>
+                </MenuItem>
+                <MenuItem x:Name="btnDonate" Header="Donate" Click="btnDonate_Click"/>
+            </Menu>
 
-    </DockPanel>
+            <TabControl Padding="2">
+                <TabItem Header="Main">
+                    <Canvas>
+                        <Label DockPanel.Dock="Bottom" x:Name="lblCreatedBy" Content="Created by ButterandCream, Two, Taylor" FontSize="10" Canvas.Top="76"/>
+                        <Button DockPanel.Dock="Left" x:Name="btnLoadMods" Width="100" Height="25" Content="Load Mods" Click="btnLoadMods_Click" Canvas.Left="98" Canvas.Top="30" />
+                    </Canvas>
+                </TabItem>
+                <TabItem Header="Direct IP">
+                    <Canvas>
+                        <TextBox x:Name="IP" Height="23" Canvas.Left="82" TextWrapping="Wrap" Text="127.0.0.1:7777" Canvas.Top="35" Width="199" HorizontalAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                        <Label Content="IP Address: " Canvas.Top="34" Canvas.Left="10"/>
+                        <ComboBox x:Name="deviceCombo" Canvas.Left="82" Canvas.Top="10" Width="199" SelectionChanged="deviceCombo_SelectionChanged"/>
+                        <Button Content="Connect" Height="25" Width="100" Canvas.Top="66" Canvas.Left="181" Click="InterceptDev"/>
+                        <Label Content="Device: " Canvas.Top="8" Canvas.Left="31"/>
+                        <TextBlock Canvas.Left="10" Canvas.Top="75">
+                            <Hyperlink NavigateUri="https://www.winpcap.org/install/default.htm" RequestNavigate="Hyperlink_RequestNavigate">
+                                Requires WinPcap
+                            </Hyperlink>
+                        </TextBlock>
+                    </Canvas>
+                </TabItem>
+                
+
+            </TabControl>
+        </DockPanel>
+    </Grid>
 
 </Window>
