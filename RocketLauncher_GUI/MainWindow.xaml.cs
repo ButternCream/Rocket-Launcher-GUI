@@ -33,7 +33,7 @@ namespace RocketLauncher_GUI
             InitializeComponent();
             LoadSettings();
             RLMenuBarInit();
-            GetDevices();
+            //GetDevices();
         }
 
         private void GetDevices()

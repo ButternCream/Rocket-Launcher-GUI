@@ -32,7 +32,7 @@
                         <Button DockPanel.Dock="Left" x:Name="btnLoadMods" Width="100" Height="25" Content="Load Mods" Click="btnLoadMods_Click" Canvas.Left="98" Canvas.Top="30" />
                     </Canvas>
                 </TabItem>
-                <TabItem Header="Direct IP">
+                <TabItem Header="Direct IP" IsEnabled="False">
                     <Canvas>
                         <TextBox x:Name="IP" Height="23" Canvas.Left="82" TextWrapping="Wrap" Text="127.0.0.1:7777" Canvas.Top="35" Width="199" HorizontalAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
                         <Label Content="IP Address: " Canvas.Top="34" Canvas.Left="10"/>
