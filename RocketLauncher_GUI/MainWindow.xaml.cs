@@ -33,7 +33,6 @@ namespace RocketLauncher_GUI
             InitializeComponent();
             LoadSettings();
             RLMenuBarInit();
-            //GetDevices();
         }
 
         private void GetDevices()
@@ -220,6 +219,17 @@ namespace RocketLauncher_GUI
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
+        }
+
+        private void onDropOpen(object sender, EventArgs e)
+        {
+            try
+            {
+                GetDevices();
+            } catch(Exception)
+            {
+                return;
+            }
         }
     }
 }
