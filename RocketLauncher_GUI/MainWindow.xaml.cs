@@ -3,6 +3,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,9 +21,7 @@ namespace RocketLauncher_GUI
     {
         /* Global Vars */
         Thread procWatcher = new Thread(new ThreadStart(GetProcInfo));   
-        Thread injectWatcher = new Thread(new ThreadStart(AutoLoadMods));
         volatile static bool abort = false;
-        volatile static bool injected = false;
 
         [DllImport("Injector.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -55,8 +54,7 @@ namespace RocketLauncher_GUI
             } catch(FileNotFoundException)
             {
                 return;
-            }
-            
+            } 
          
         }
 
@@ -75,11 +73,11 @@ namespace RocketLauncher_GUI
         private void LoadSettings()
         {
             btnAutoLoadMods.IsChecked = Properties.Settings.Default.AutoLoadMods;
-            if (btnAutoLoadMods.IsChecked && !injectWatcher.IsAlive)
+            if (btnAutoLoadMods.IsChecked && !IsModuleLoaded("RLModding.dll"))
             {
                 Console.WriteLine("Started AutoLoad thread");
                 abort = false;
-                injectWatcher = new Thread(new ThreadStart(AutoLoadMods));
+                Thread injectWatcher = new Thread(() => AutoLoadMods());
                 injectWatcher.IsBackground = true;
                 injectWatcher.Start();
             }
@@ -133,12 +131,15 @@ namespace RocketLauncher_GUI
                     Process[] procs = Process.GetProcessesByName("RocketLeague");
                     if (procs.Length > 0)
                     {
-                        Console.WriteLine("Found rocket league for auto injection thread");
-                        Thread.Sleep(20000);
-                        if (Inject())
-                            injected = true;
-                        else
-                            injected = false;
+                        
+                        Thread.Sleep(15000);
+                        if (!IsModuleLoaded("RLModding.dll"))
+                        {
+                            Console.WriteLine("Injecting");
+                            System.Media.SoundPlayer sound = new System.Media.SoundPlayer(@"C:\Windows\Media\chimes.wav");
+                            sound.Play();
+                            injected = Inject();
+                        }
                     }
                     else { Thread.Sleep(1000); }
                 }
@@ -155,23 +156,37 @@ namespace RocketLauncher_GUI
 
         private void btnLoadMods_Click(object sender, RoutedEventArgs e)
         {
-            if (!injected && Inject())
-                injected = true;
-            else
-                injected = false;
+            if (!IsModuleLoaded("RLModding.dll") && Inject())
+            {
+                System.Media.SoundPlayer sound = new System.Media.SoundPlayer(@"C:\Windows\Media\chimes.wav");
+                sound.Play();
+                injectLbl.Content = "Injected";
+            }
+            else if (IsModuleLoaded("RLModding.dll"))
+            {
+                injectLbl.Content = "Injected";
+            }
+              
         }
 
-       
+        private static bool IsModuleLoaded(String ModuleName)
+        {
+            var q = from p in Process.GetProcessesByName("RocketLeague")
+                    from m in p.Modules.OfType<ProcessModule>()
+                    select m;
+            return q.Any(pm => pm.ModuleName.Contains(ModuleName));
+        }
 
         private void btnAutoLoadMods_Clicked(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.AutoLoadMods = btnAutoLoadMods.IsChecked;
             Properties.Settings.Default.Save();
-            if (btnAutoLoadMods.IsChecked && !injectWatcher.IsAlive)
+            if (btnAutoLoadMods.IsChecked && !IsModuleLoaded("RLModding.dll"))
             {
                 Console.WriteLine("Started AutoLoad thread");
                 abort = false;
-                injectWatcher = new Thread(new ThreadStart(AutoLoadMods));
+                Thread injectWatcher = new Thread(() => AutoLoadMods());
+                injectWatcher.IsBackground = true;
                 injectWatcher.Start();
             }
             else if (!btnAutoLoadMods.IsChecked)

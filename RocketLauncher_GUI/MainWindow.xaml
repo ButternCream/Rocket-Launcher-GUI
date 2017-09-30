@@ -29,7 +29,8 @@
                 <TabItem Header="Main">
                     <Canvas>
                         <Label DockPanel.Dock="Bottom" x:Name="lblCreatedBy" Content="Created by ButterandCream, Two, Taylor" FontSize="10" Canvas.Top="76"/>
-                        <Button DockPanel.Dock="Left" x:Name="btnLoadMods" Width="100" Height="25" Content="Load Mods" Click="btnLoadMods_Click" Canvas.Left="98" Canvas.Top="30" />
+                        <Button DockPanel.Dock="Left" x:Name="btnLoadMods" Width="100" Height="25" Content="Load Mods" Click="btnLoadMods_Click" Canvas.Left="98" Canvas.Top="23" />
+                        <Label x:Name="injectLbl" Content="Not Injected" Canvas.Left="98" Canvas.Top="48" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontSize="10" Width="100" />
                     </Canvas>
                 </TabItem>
                 <TabItem Header="Direct IP">
@@ -46,7 +47,8 @@
                         </TextBlock>
                     </Canvas>
                 </TabItem>
-                
+
+
 
             </TabControl>
         </DockPanel>
