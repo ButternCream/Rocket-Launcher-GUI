@@ -87,7 +87,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Support Files\LAN.cs" />
+    <Compile Include="Support Files\Host.cs" />
+    <Compile Include="Support Files\Simulator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

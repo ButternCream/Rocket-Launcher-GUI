@@ -6,104 +6,51 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace RocketLauncher_GUI.Support_Files
 {
-    public class Request
+    public class Simulator
     {
-        public Filter Filter;
-        public int BuildID;
-        public bool bHost;
-        public string Nonce;
-    }
-
-    public class Response
-    {
-        public Result Result;
-        public string ServerID;
-        public string MetaData;
-        public string Nonce;
-    }
-
-    public class Filter
-    {
-        public string GameTags;
-        public string MapName;
-        public int GameMode;
-        public int MaxPlayerCount;
-        public string ServerName;
-        public string Password;
-        public bool bPublic;
-        public Teamsetting[] TeamSettings;
-    }
-
-    public class Teamsetting
-    {
-        public string Name = "";
-        public Colors Colors;
-    }
-
-    public class Colors
-    {
-        public int TeamColorID = 0;
-        public int CustomColorID = 0;
-        public bool bTeamColorSet = false;
-        public bool bCustomColorSet = false;
-    }
-
-    public class Result
-    {
-        public string Address;
-        public string ServerName;
-        public Settings Settings;
-    }
-
-    public class Settings
-    {
-        public string GameTags;
-        public string MapName;
-        public int GameMode;
-        public int MaxPlayerCount;
-        public string ServerName;
-        public string Password;
-        public bool bPublic;
-        public Teamsetting[] TeamSettings;
-    }
-
-
-    public class MetaData
-    {
-        public string OwnerID;
-        public string OwnerName;
-        public string ServerName;
-        public string ServerMap;
-        public int ServerGameMode;
-        public bool bPassword;
-        public int NumPlayers;
-        public int MaxPlayers;
-    }
-
-    public class LAN
-    {
-        // response reference from whynotsteven https://hastebin.com/anezitemur.css
-
-        // List of servers to return
-        public static List<String> serverList = new List<string>()
-        {
-            "184.91.128.16:7777"
-        };
+        public static List<String> ServerList = new List<string>();
+        public static List<PacketCommunicator> OpenCommunicators = new List<PacketCommunicator>();
+        public static List<Thread> OpenThreads = new List<Thread>();
 
         /*
          * Intercept all packets going through port 14001
          * DeviceID: id of device from LivePacketDevice.AllLocalMachine
          */
-        public static void Intercept(int DeviceID)
+        public static void Intercept(List<string> serverList)
         {
-            var device = LivePacketDevice.AllLocalMachine[DeviceID];
+            // Set new server list
+            ServerList = serverList;
 
+            // Close old communicators and threads
+            foreach (var openCommunicator in OpenCommunicators)
+                openCommunicator.Dispose();
+            foreach (var openThread in OpenThreads)
+                openThread.Abort();
+
+            // Start new intercepting communicators
+            foreach (var device in LivePacketDevice.AllLocalMachine)
+            {
+                Thread thread = new Thread(InterceptDevice);
+                thread.IsBackground = true;
+                thread.Start(device);
+                OpenThreads.Add(thread);
+            }
+        }
+
+        private static void InterceptDevice(object data)
+        {
+            LivePacketDevice device = (LivePacketDevice)data;
             using (PacketCommunicator communicator = device.Open(65536, PacketDeviceOpenAttributes.Promiscuous, 1000))
             {
-                communicator.ReceivePackets(int.MaxValue, PacketHandler);
+                using (BerkeleyPacketFilter filter = communicator.CreateFilter("udp port 14001"))
+                {
+                    communicator.SetFilter(filter);
+                    communicator.ReceivePackets(int.MaxValue, PacketHandler);
+                }
             }
         }
 
@@ -119,39 +66,47 @@ namespace RocketLauncher_GUI.Support_Files
             // If this is a hostquery message we will respond
             if (str.Contains("HostQuery_X"))
             {
+                Console.WriteLine(str);
                 // Convert data to useable object
                 string json = str.Split(new string[] { "HostQuery_X" }, StringSplitOptions.None)[1];
-                Request request = JsonConvert.DeserializeObject<Request>(json);
-
-                // For every server we want to show we will send a response packet back
-                foreach (string ServerID in serverList)
+                try
                 {
-                    Response response = craftResponse(ServerID, request);
-                    SendResponse(response);
+                    HostQuery_X query = JsonConvert.DeserializeObject<HostQuery_X>(json);
+
+                    // For every server we want to show we will send a response packet back
+                    foreach (string ServerID in ServerList)
+                    {
+                        HostResponse_X response = CraftResponse(ServerID, query);
+                        SendResponse(response);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
                 }
             }
         }
 
-        private static void SendResponse(Response response)
+        private static void SendResponse(HostResponse_X response)
         {
             Console.WriteLine("sending response");
 
             // Packet header, format = "*something*" + "ProjectX.LanMessage_HostQuery_X" + "*something*" + json
             var bytes = "\x00\x00\x00\x22\x50\x72\x6f\x6a\x65\x63\x74\x58\x2e\x4c\x61\x6e\x4d\x65\x73\x73\x61\x67\x65\x5f\x48\x6f\x73\x74\x52\x65\x73\x70\x6f\x6e\x73\x65\x5f\x58\x00";
+            var RequestData = Encoding.ASCII.GetBytes(bytes + JsonConvert.SerializeObject(response));
 
             // Send the packet through UDP
             IPEndPoint RemoteEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 14001);
             var Client = new UdpClient();
-            var RequestData = Encoding.ASCII.GetBytes(bytes + JsonConvert.SerializeObject(response));
             var ServerEp = new IPEndPoint(IPAddress.Any, 14001);
             Client.EnableBroadcast = true;
             Client.Send(RequestData, RequestData.Length, RemoteEndPoint);
             Client.Close();
         }
 
-        private static Response craftResponse(string ServerID, Request request)
+        private static HostResponse_X CraftResponse(string serverID, HostQuery_X query)
         {
-            Response response = new Response()
+            HostResponse_X response = new HostResponse_X()
             {
                 Result = new Result
                 {
@@ -171,19 +126,19 @@ namespace RocketLauncher_GUI.Support_Files
                         }
                     }
                 },
-                ServerID = ServerID,
+                ServerID = serverID,
                 MetaData = JsonConvert.SerializeObject(new MetaData()
                 {
                     OwnerID = "Steam|76561198033133742|0",
                     OwnerName = $"/r/RocketLeagueMods",
-                    ServerName = $"RocketLeagueMods {ServerID}",
+                    ServerName = $"RocketLeagueMods {serverID}",
                     ServerMap = "Labs_Underpass_P",
                     ServerGameMode = 0,
                     bPassword = false,
                     NumPlayers = 1,
                     MaxPlayers = 10
                 }),
-                Nonce = request.Nonce
+                Nonce = query.Nonce
             };
 
             return response;

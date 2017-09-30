@@ -1,5 +1,6 @@
 ﻿using PcapDotNet.Core;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -32,30 +33,6 @@ namespace RocketLauncher_GUI
             InitializeComponent();
             LoadSettings();
             RLMenuBarInit();
-        }
-
-        private void GetDevices()
-        {
-            ObservableCollection<string> list = new ObservableCollection<string>();
-            try
-            {
-                foreach (var d in LivePacketDevice.AllLocalMachine)
-                {
-                    string desc = d.Description;
-                    int f = desc.IndexOf('\'', desc.IndexOf('\'') + 1);
-                    Console.WriteLine(f);
-                    list.Add(d.Description.Remove(f).Replace("'", ""));
-                }
-                deviceCombo.ItemsSource = list;
-                if (Properties.Settings.Default.DeviceIndex > -1)
-                {
-                    deviceCombo.SelectedIndex = Properties.Settings.Default.DeviceIndex;
-                }
-            } catch(FileNotFoundException)
-            {
-                return;
-            } 
-         
         }
 
         private void RLMenuBarInit()
@@ -211,23 +188,10 @@ namespace RocketLauncher_GUI
             }
         }
 
-        private void deviceCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Properties.Settings.Default.DeviceIndex = deviceCombo.SelectedIndex;
-        }
-
         private void InterceptDev(object sender, RoutedEventArgs e)
         {
-            Support_Files.LAN.serverList.Add(IP.Text);
-            if (Properties.Settings.Default.DeviceIndex > -1)
-            {
-                Properties.Settings.Default.Save();
-
-                Thread packets = new Thread(() => Support_Files.LAN.Intercept(Properties.Settings.Default.DeviceIndex));
-                packets.IsBackground = true;
-                packets.Start();
-                Console.WriteLine("Packet thread started!");
-            }
+            List<string> serverList = new List<string>() { IP.Text };
+            Support_Files.Simulator.Intercept(serverList);
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -236,15 +200,5 @@ namespace RocketLauncher_GUI
             e.Handled = true;
         }
 
-        private void onDropOpen(object sender, EventArgs e)
-        {
-            try
-            {
-                GetDevices();
-            } catch(Exception)
-            {
-                return;
-            }
-        }
     }
 }
