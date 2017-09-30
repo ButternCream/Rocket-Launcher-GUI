@@ -35,10 +35,10 @@
                 </TabItem>
                 <TabItem Header="Direct IP">
                     <Canvas>
-                        <TextBox x:Name="IP" Height="23" Canvas.Left="82" TextWrapping="Wrap" Text="127.0.0.1:7777" Canvas.Top="24" Width="199" HorizontalAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                        <Label Content="IP Address: " Canvas.Top="23" Canvas.Left="10"/>
-                        <Button Content="Connect" Height="25" Width="100" Canvas.Top="58" Canvas.Left="181" Click="InterceptDev"/>
-                        <TextBlock Canvas.Left="10" Canvas.Top="66">
+                        <TextBox x:Name="IP" Height="23" Canvas.Left="81" TextWrapping="Wrap" Text="127.0.0.1:7777" Canvas.Top="20" Width="199" HorizontalAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                        <Label Content="IP Address: " Canvas.Top="19" Canvas.Left="9"/>
+                        <Button Content="Run" Height="25" Width="100" Canvas.Top="54" Canvas.Left="180" Click="InterceptDev"/>
+                        <TextBlock Canvas.Left="9" Canvas.Top="62">
                             <Hyperlink NavigateUri="https://www.winpcap.org/install/default.htm" RequestNavigate="Hyperlink_RequestNavigate">
                                 Requires WinPcap
                             </Hyperlink>
