@@ -190,8 +190,18 @@ namespace RocketLauncher_GUI
 
         private void InterceptDev(object sender, RoutedEventArgs e)
         {
-            List<string> serverList = new List<string>() { IP.Text };
-            Support_Files.Simulator.Intercept(serverList);
+            try
+            {
+                throw new Exception();
+                List<string> serverList = new List<string>() { IP.Text };
+                Support_Files.Simulator.Intercept(serverList);
+            }
+            catch (Exception)
+            {
+                Notice notice = new Notice();
+                notice.Show();
+            }
+            
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
