@@ -192,7 +192,6 @@ namespace RocketLauncher_GUI
         {
             try
             {
-                throw new Exception();
                 List<string> serverList = new List<string>() { IP.Text };
                 Support_Files.Simulator.Intercept(serverList);
             }
