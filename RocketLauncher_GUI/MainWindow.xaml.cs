@@ -302,8 +302,7 @@ namespace RocketLauncher_GUI
             }
             catch (Exception)
             {
-                Notice notice = new Notice();
-                notice.Show();
+                MessageBox.Show("WinPcap not detected, please download it in order to use direct ip");
             }
             
         }
@@ -379,6 +378,7 @@ namespace RocketLauncher_GUI
                     string backed_up = ParkPFile + ".bak";
                     //Restore original map
                     File.Copy(Path.Combine(cooked_path, backed_up), parkp_path);
+                    swap_label.Content = "Original Park P Restored";
                 }
                 catch (Exception)
                 {
@@ -416,7 +416,8 @@ namespace RocketLauncher_GUI
                 
                 File.Delete(parkp_path);
                 string selectedMap = WorkshopMapPaths[index];
-                File.Copy(selectedMap, parkp_path);       
+                File.Copy(selectedMap, parkp_path);
+                swap_label.Content = "Swapped Successfully";
                 
             }
             catch (Exception)

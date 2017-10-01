@@ -51,8 +51,10 @@
                         <Button x:Name="refresh_maps" Content="Refresh" Canvas.Left="186" Canvas.Top="10" Width="75" Click="refresh_maps_Click"/>
                         <Button x:Name="restore_btn" Content="Restore" Canvas.Left="106" Canvas.Top="35" Width="75" Click="restore_map_Click"/>
                         <Button x:Name="replace_btn" Content="Swap" Canvas.Left="26" Canvas.Top="35" Width="75" Click="swap_map_Click"/>
+                        <Label x:Name="swap_label" Content="" Height="30" Width="155" Canvas.Left="26" Canvas.Top="55"/>
                     </Canvas>
                 </TabItem>
+
 
 
 
