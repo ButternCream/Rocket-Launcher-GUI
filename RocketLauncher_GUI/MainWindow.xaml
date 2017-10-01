@@ -51,9 +51,11 @@
                         <Button x:Name="refresh_maps" Content="Refresh" Canvas.Left="186" Canvas.Top="10" Width="75" Click="refresh_maps_Click" Height="21"/>
                         <Button x:Name="restore_btn" Content="Restore" Canvas.Left="106" Canvas.Top="36" Width="75" Click="restore_map_Click"/>
                         <Button x:Name="replace_btn" Content="Swap" Canvas.Left="26" Canvas.Top="36" Width="75" Click="swap_map_Click"/>
-                        <Label x:Name="swap_label" Content="" Height="30" Width="155" Canvas.Left="26" Canvas.Top="61"/>
+                        <Label x:Name="swap_label" Content="" Height="30" Width="257" Canvas.Left="26" Canvas.Top="61" FontSize="10"/>
+                        <Label Content="Credits to Thanrek" Height="25" Width="91" Canvas.Top="80" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontSize="10" Canvas.Left="10"/>
                     </Canvas>
                 </TabItem>
+
 
 
 

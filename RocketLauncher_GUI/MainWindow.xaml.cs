@@ -379,7 +379,7 @@ namespace RocketLauncher_GUI
                         File.Delete(parkp_path);
                         //Restore original map
                         File.Copy(Path.Combine(cooked_path, backed_up), parkp_path);
-                        swap_label.Content = "Original Double Goal Map Restored";
+                        swap_label.Content = "Original Double Goals Map Restored Successfully";
                     }
                     else
                     {
@@ -424,7 +424,7 @@ namespace RocketLauncher_GUI
                 File.Delete(parkp_path);
                 string selectedMap = WorkshopMapPaths[index];
                 File.Copy(selectedMap, parkp_path);
-                swap_label.Content = "Swapped Successfully";
+                swap_label.Content = "Swapped Successfully With Double Goals Map";
                 
             }
             catch (Exception)
