@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RocketLauncher_GUI"
         mc:Ignorable="d"
-        Title="Rocket Launcher 3.0" Height="176" Width="305" ResizeMode="NoResize">
+        Title="Rocket Launcher 3.0" Height="196.242" Width="305" ResizeMode="NoResize">
 
     <Grid>
         <DockPanel HorizontalAlignment="Stretch">
@@ -28,23 +28,24 @@
             <TabControl Padding="2">
                 <TabItem Header="Main">
                     <Canvas>
-                        <Label DockPanel.Dock="Bottom" x:Name="lblCreatedBy" Content="Created by ButterandCream, Two, Taylor" FontSize="10" Canvas.Top="67"/>
-                        <Button DockPanel.Dock="Left" x:Name="btnLoadMods" Width="100" Height="25" Content="Load Mods" Click="btnLoadMods_Click" Canvas.Left="98" Canvas.Top="17" />
-                        <Label x:Name="injectLbl" Content="Not Injected" Canvas.Left="98" Canvas.Top="42" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontSize="10" Width="100" />
+                        <Label DockPanel.Dock="Bottom" x:Name="lblCreatedBy" Content="Created by ButterandCream, Two, Taylor" FontSize="10" Canvas.Top="82"/>
+                        <Button DockPanel.Dock="Left" x:Name="btnLoadMods" Width="100" Height="25" Content="Load Mods" Click="btnLoadMods_Click" Canvas.Left="94" Canvas.Top="23" />
+                        <Label x:Name="injectLbl" Content="Not Injected" Canvas.Left="94" Canvas.Top="48" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontSize="10" Width="100" />
                     </Canvas>
                 </TabItem>
                 <TabItem Header="Direct IP">
                     <Canvas>
                         <TextBox x:Name="IP" Height="23" Canvas.Left="81" TextWrapping="Wrap" Text="127.0.0.1:7777" Canvas.Top="20" Width="199" HorizontalAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
                         <Label Content="IP Address: " Canvas.Top="19" Canvas.Left="9"/>
-                        <Button Content="Run" Height="25" Width="100" Canvas.Top="54" Canvas.Left="180" Click="InterceptDev"/>
-                        <TextBlock Canvas.Left="9" Canvas.Top="62">
-                            <Hyperlink NavigateUri="https://www.winpcap.org/install/default.htm" RequestNavigate="Hyperlink_RequestNavigate">
+                        <Button Content="Run" Height="25" Width="100" Canvas.Top="65" Canvas.Left="180" Click="InterceptDev"/>
+                        <TextBlock Canvas.Left="10" Canvas.Top="50" FontSize="10">
                                 Requires WinPcap
-                            </Hyperlink>
                         </TextBlock>
+                        <ProgressBar Visibility="Hidden" x:Name="download_bar" Height="10" Width="273" Canvas.Left="9" Canvas.Top="95" />
+                        <Button Content="Download WinPcap" Height="25" Width="114" Canvas.Top="65" Canvas.Left="10" Click="WinPcap_Download_Handler"/>
                     </Canvas>
                 </TabItem>
+
 
 
 

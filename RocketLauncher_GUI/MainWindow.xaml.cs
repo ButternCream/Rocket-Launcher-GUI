@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,7 +23,9 @@ namespace RocketLauncher_GUI
     public partial class MainWindow : Window
     {
         /* Global Vars */
-        Thread procWatcher = new Thread(new ThreadStart(GetProcInfo));   
+        Thread procWatcher = new Thread(new ThreadStart(GetProcInfo));
+        public delegate void updateLabel(string text);
+        Thread updateThread;
         volatile static bool abort = false;
 
         [DllImport("Injector.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -33,6 +37,10 @@ namespace RocketLauncher_GUI
             InitializeComponent();
             LoadSettings();
             RLMenuBarInit();
+            updateThread = new Thread(new ThreadStart(CheckForRL));
+            updateThread.Name = "Update Thread";
+            updateThread.IsBackground = true;
+            updateThread.Start();
         }
 
         private void RLMenuBarInit()
@@ -64,6 +72,28 @@ namespace RocketLauncher_GUI
                 procWatcher.Start();
             }
             
+        }
+
+        
+        private void CheckForRL()
+        {
+            while (true)
+            {
+                Process[] procs = Process.GetProcessesByName("RocketLeague");
+                if (procs.Length < 1 || !IsModuleLoaded("RLModding.dll"))
+                {
+                    // Change inject label
+                    updateLabel delUpadte = new updateLabel(UpdateUI);
+                    this.injectLbl.Dispatcher.BeginInvoke(delUpadte, "Not Injected");
+                    
+                }
+                else { Thread.Sleep(5000); }
+            }
+        }
+
+        private void UpdateUI(string text)
+        {
+            this.injectLbl.Content = text;
         }
 
         private static void GetProcInfo()
@@ -208,6 +238,51 @@ namespace RocketLauncher_GUI
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
         }
+        // Download WinPcap
+        Uri uri = new Uri("https://www.winpcap.org/install/bin/WinPcap_4_1_3.exe");
+        string path = Directory.GetCurrentDirectory() + "/WinPcap.exe";
+        private void WinPcap_Download_Handler(object sender, RoutedEventArgs e)
+        {
+            
+            try
+            {
+                download_bar.Visibility = Visibility.Visible;
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                } 
+                WebClient wc = new WebClient();
+                wc.DownloadFileAsync(uri, path);
+                wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
+                wc.DownloadFileCompleted += new AsyncCompletedEventHandler(wc_DownloadFileCompleted);
+            }
+            catch (Exception)
+            {
+                return;
+            }
 
+        }
+
+        private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            download_bar.Value = e.ProgressPercentage;
+            if (download_bar.Value == download_bar.Maximum)
+            {
+                download_bar.Value = 0;
+            }
+        }
+
+        private void wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                Process.Start(path);
+                download_bar.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+
+            }
+        }
     }
 }
