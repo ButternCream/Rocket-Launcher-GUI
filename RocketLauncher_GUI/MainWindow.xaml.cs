@@ -23,11 +23,12 @@ namespace RocketLauncher_GUI
     public partial class MainWindow : Window
     {
         /* Global Vars */
-        Thread procWatcher = new Thread(new ThreadStart(GetProcInfo));
+        Thread procWatcher;
         public delegate void updateLabel(string text);
         Thread updateThread;
         volatile static bool abort = false;
 
+        // Import c++ inject function
         [DllImport("Injector.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool Inject();
@@ -37,12 +38,16 @@ namespace RocketLauncher_GUI
             InitializeComponent();
             LoadSettings();
             RLMenuBarInit();
+            //Start thread to check if RL is running / if dll is injected
             updateThread = new Thread(new ThreadStart(CheckForRL));
             updateThread.Name = "Update Thread";
             updateThread.IsBackground = true;
             updateThread.Start();
         }
 
+        /*
+         * If user path has been found enable rocket league menu option 
+         */
         private void RLMenuBarInit()
         {
             if (Properties.Settings.Default.Path == String.Empty)
@@ -55,6 +60,9 @@ namespace RocketLauncher_GUI
             }
         }
 
+        /*
+         * Start auto injector if enabled and process watcher if path is empty
+         */
         private void LoadSettings()
         {
             btnAutoLoadMods.IsChecked = Properties.Settings.Default.AutoLoadMods;
@@ -68,13 +76,16 @@ namespace RocketLauncher_GUI
             }
             if (Properties.Settings.Default.Path == String.Empty)
             {
+                procWatcher = new Thread(new ThreadStart(GetProcInfo));
                 procWatcher.IsBackground = true;
                 procWatcher.Start();
             }
             
         }
 
-        
+        /*
+         * Check if RL is running and if not, update the injector label
+         */
         private void CheckForRL()
         {
             while (true)
@@ -82,7 +93,7 @@ namespace RocketLauncher_GUI
                 Process[] procs = Process.GetProcessesByName("RocketLeague");
                 if (procs.Length < 1 || !IsModuleLoaded("RLModding.dll"))
                 {
-                    // Change inject label
+                    // Change inject label using delegate callback
                     updateLabel delUpadte = new updateLabel(UpdateUI);
                     this.injectLbl.Dispatcher.BeginInvoke(delUpadte, "Not Injected");
                     
@@ -91,11 +102,17 @@ namespace RocketLauncher_GUI
             }
         }
 
+        /*
+         * Update injector label
+         */
         private void UpdateUI(string text)
         {
             this.injectLbl.Content = text;
         }
 
+        /*
+         * Get users RL path if it doesn't exists
+         */
         private static void GetProcInfo()
         {
             if (Properties.Settings.Default.Path != String.Empty)
@@ -127,7 +144,9 @@ namespace RocketLauncher_GUI
 
         }
 
-
+        /*
+         * Auto injector function
+         */
         private static void AutoLoadMods()
         {
             if (Properties.Settings.Default.AutoLoadMods)
@@ -154,13 +173,14 @@ namespace RocketLauncher_GUI
             }
         }
 
+        /* Donate */
          private void btnDonate_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XHLHQGAQK2XZG");
         }
 
         
-
+        /* Load Mods button click */
         private void btnLoadMods_Click(object sender, RoutedEventArgs e)
         {
             if (!IsModuleLoaded("RLModding.dll") && Inject())
@@ -176,6 +196,7 @@ namespace RocketLauncher_GUI
               
         }
 
+        /* Check if dll is injected */
         private static bool IsModuleLoaded(String ModuleName)
         {
             var q = from p in Process.GetProcessesByName("RocketLeague")
@@ -184,6 +205,9 @@ namespace RocketLauncher_GUI
             return q.Any(pm => pm.ModuleName.Contains(ModuleName));
         }
 
+        /*
+         * Start thread for auto injector if the user changed their 'Auto Load Mods' setting
+         */
         private void btnAutoLoadMods_Clicked(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.AutoLoadMods = btnAutoLoadMods.IsChecked;
@@ -203,12 +227,14 @@ namespace RocketLauncher_GUI
             }
         }
 
+        /* Start RL */
         private void Start_Click(object sender, RoutedEventArgs e)
         {
             String RL = Properties.Settings.Default.Path + "RocketLeague.exe";
             Process.Start(RL);
         }
 
+        /* Kill Rocket League Process */
         private void Kill_Click(object sender, RoutedEventArgs e)
         {
             Process[] procs = Process.GetProcessesByName("RocketLeague");
@@ -218,6 +244,7 @@ namespace RocketLauncher_GUI
             }
         }
 
+        /* Intercept wireless devices for direct IP to send requests to specified ip */
         private void InterceptDev(object sender, RoutedEventArgs e)
         {
             try
@@ -233,12 +260,7 @@ namespace RocketLauncher_GUI
             
         }
 
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
-            e.Handled = true;
-        }
-        // Download WinPcap
+        /* Download WinPcap and run the installer */
         Uri uri = new Uri("https://www.winpcap.org/install/bin/WinPcap_4_1_3.exe");
         string path = Directory.GetCurrentDirectory() + "/WinPcap.exe";
         private void WinPcap_Download_Handler(object sender, RoutedEventArgs e)
@@ -263,6 +285,7 @@ namespace RocketLauncher_GUI
 
         }
 
+        /* Update the progress bar */
         private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             download_bar.Value = e.ProgressPercentage;
@@ -272,6 +295,7 @@ namespace RocketLauncher_GUI
             }
         }
 
+        /* Start WinPcap installer after download completes */
         private void wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
             if (e.Error == null)
@@ -281,7 +305,7 @@ namespace RocketLauncher_GUI
             }
             else
             {
-
+                MessageBox.Show("Error running WinPcap installer, check connection");
             }
         }
     }
