@@ -20,7 +20,9 @@ namespace RocketLauncher_GUI
         Thread procWatcher;
         public delegate void updateLabel(string text);
         Thread updateThread;
+        Thread injectWatcher;
         volatile static bool abort = false;
+        volatile static bool auto_inject = Properties.Settings.Default.AutoLoadMods;
         List<string> WorkshopMapPaths = new List<string>();
         string ParkPFile = "Labs_DoubleGoal_V2_P.upk";
 
@@ -36,6 +38,10 @@ namespace RocketLauncher_GUI
             RLMenuBarInit();
             GetPaths();
             GetMaps();
+            if (IsModuleLoaded("RLModding"))
+            {
+                injectLbl.Content = "Injected";
+            }
             //Start thread to check if RL is running / if dll is injected
             updateThread = new Thread(new ThreadStart(CheckForRL));
             updateThread.Name = "Update Thread";
@@ -87,6 +93,11 @@ namespace RocketLauncher_GUI
 
         private void GetMaps()
         {
+            if (Properties.Settings.Default.Cooked_Path == String.Empty || Properties.Settings.Default.Workshop_Path == String.Empty)
+            {
+                return;
+            }
+
             workshop_maps_combo.Items.Clear();
             foreach(var folder in Directory.GetDirectories(Properties.Settings.Default.Workshop_Path))
             {
@@ -108,7 +119,7 @@ namespace RocketLauncher_GUI
             {
                 Console.WriteLine("Started AutoLoad thread");
                 abort = false;
-                Thread injectWatcher = new Thread(() => AutoLoadMods());
+                injectWatcher = new Thread(() => AutoLoadMods());
                 injectWatcher.IsBackground = true;
                 injectWatcher.Start();
             }
@@ -128,15 +139,27 @@ namespace RocketLauncher_GUI
         {
             while (true)
             {
-                Process[] procs = Process.GetProcessesByName("RocketLeague");
-                if (procs.Length < 1 || !IsModuleLoaded("RLModding.dll"))
+                if (Process.GetProcessesByName("RocketLeague").Length < 1)
                 {
                     // Change inject label using delegate callback
                     updateLabel delUpadte = new updateLabel(UpdateUI);
                     this.injectLbl.Dispatcher.BeginInvoke(delUpadte, "Not Injected");
-                    
+
                 }
-                else { Thread.Sleep(5000); }
+                else if (IsModuleLoaded("RLModding.dll"))
+                {
+                    // Change inject label using delegate callback
+                    updateLabel delUpadte = new updateLabel(UpdateUI);
+                    this.injectLbl.Dispatcher.BeginInvoke(delUpadte, "Injected");
+                }
+                else if (auto_inject && !injectWatcher.IsAlive)
+                {
+                    Console.WriteLine("Starting auto inject after close");
+                    injectWatcher = new Thread(() => AutoLoadMods());
+                    injectWatcher.IsBackground = true;
+                    injectWatcher.Start();
+                }
+                Thread.Sleep(3000);
             }
         }
 
@@ -224,15 +247,15 @@ namespace RocketLauncher_GUI
         /* Load Mods button click */
         private void btnLoadMods_Click(object sender, RoutedEventArgs e)
         {
-            if (!IsModuleLoaded("RLModding.dll") && Inject())
+            if (!IsModuleLoaded("RLModding.dll"))
             {
-                System.Media.SoundPlayer sound = new System.Media.SoundPlayer(@"C:\Windows\Media\chimes.wav");
-                sound.Play();
-                injectLbl.Content = "Injected";
-            }
-            else if (IsModuleLoaded("RLModding.dll"))
-            {
-                injectLbl.Content = "Injected";
+                if (Inject())
+                {
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(@"C:\Windows\Media\chimes.wav");
+                    sound.Play();
+                    injectLbl.Content = "Injected";
+                }
+                
             }
               
         }
@@ -240,16 +263,25 @@ namespace RocketLauncher_GUI
         /* Check if dll is injected */
         private static bool IsModuleLoaded(String ModuleName)
         {
-            try {
-                var q = from p in Process.GetProcessesByName("RocketLeague")
-                        from m in p.Modules.OfType<ProcessModule>()
-                        select m;
-                return q.Any(pm => pm.ModuleName.Contains(ModuleName));
+            if (Process.GetProcessesByName("RocketLeague").Length > 0)
+            {
+                try
+                {
+                    var q = from p in Process.GetProcessesByName("RocketLeague")
+                            from m in p.Modules.OfType<ProcessModule>()
+                            select m;
+                    return q.Any(pm => pm.ModuleName.Contains(ModuleName));
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
             }
-            catch (Exception)
+            else
             {
                 return false;
             }
+            
             
         }
 
@@ -264,14 +296,16 @@ namespace RocketLauncher_GUI
             {
                 Console.WriteLine("Started AutoLoad thread");
                 abort = false;
-                Thread injectWatcher = new Thread(() => AutoLoadMods());
+                injectWatcher = new Thread(() => AutoLoadMods());
                 injectWatcher.IsBackground = true;
                 injectWatcher.Start();
+                auto_inject = true;
             }
             else if (!btnAutoLoadMods.IsChecked)
             {
                 Console.WriteLine("Aborting AutoLoad thread");
                 abort = true;
+                auto_inject = false;
             }
         }
 
