@@ -45,6 +45,14 @@
                         <Button Content="Download WinPcap" Height="25" Width="114" Canvas.Top="65" Canvas.Left="10" Click="WinPcap_Download_Handler"/>
                     </Canvas>
                 </TabItem>
+                <TabItem Header="Map Swapper">
+                    <Canvas>
+                        <ComboBox x:Name="workshop_maps_combo" Height="20" Width="155" Canvas.Left="26" Canvas.Top="10"/>
+                        <Button x:Name="refresh_maps" Content="Refresh" Canvas.Left="186" Canvas.Top="10" Width="75" Click="refresh_maps_Click"/>
+                        <Button x:Name="restore_btn" Content="Restore" Canvas.Left="106" Canvas.Top="35" Width="75" Click="restore_map_Click"/>
+                        <Button x:Name="replace_btn" Content="Swap" Canvas.Left="26" Canvas.Top="35" Width="75" Click="swap_map_Click"/>
+                    </Canvas>
+                </TabItem>
 
 
 

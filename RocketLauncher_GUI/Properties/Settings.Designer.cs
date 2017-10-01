@@ -58,5 +58,29 @@ namespace RocketLauncher_GUI.Properties {
                 this["DeviceIndex"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Workshop_Path {
+            get {
+                return ((string)(this["Workshop_Path"]));
+            }
+            set {
+                this["Workshop_Path"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Cooked_Path {
+            get {
+                return ((string)(this["Cooked_Path"]));
+            }
+            set {
+                this["Cooked_Path"] = value;
+            }
+        }
     }
 }

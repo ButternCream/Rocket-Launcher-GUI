@@ -21,6 +21,8 @@ namespace RocketLauncher_GUI
         public delegate void updateLabel(string text);
         Thread updateThread;
         volatile static bool abort = false;
+        List<string> WorkshopMapPaths = new List<string>();
+        string ParkPFile = "Park_P.upk";
 
         // Import c++ inject function
         [DllImport("Injector.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -32,6 +34,8 @@ namespace RocketLauncher_GUI
             InitializeComponent();
             LoadSettings();
             RLMenuBarInit();
+            GetPaths();
+            GetMaps();
             //Start thread to check if RL is running / if dll is injected
             updateThread = new Thread(new ThreadStart(CheckForRL));
             updateThread.Name = "Update Thread";
@@ -51,6 +55,46 @@ namespace RocketLauncher_GUI
             else
             {
                 Rocket_League.IsEnabled = true;
+            }
+        }
+
+        /* Get Workshop path and CookedPCConsole path */
+        private static void GetPaths()
+        {
+            if (Properties.Settings.Default.Cooked_Path != String.Empty && Properties.Settings.Default.Workshop_Path != String.Empty)
+            {
+                return;
+            }
+
+            if (Properties.Settings.Default.Cooked_Path == String.Empty && Properties.Settings.Default.Path != String.Empty)
+            {
+                int startindex = Properties.Settings.Default.Path.IndexOf("rocketleague");
+                int endindex = Properties.Settings.Default.Path.IndexOf("\\\\", startindex);
+                string sub = Properties.Settings.Default.Path.Substring(0, endindex + 2);
+                string cooked_path = Path.Combine(sub, "TAGame\\\\CookedPCConsole");
+                Properties.Settings.Default.Cooked_Path = cooked_path;
+            }
+            if (Properties.Settings.Default.Workshop_Path == String.Empty && Properties.Settings.Default.Path != String.Empty)
+            {
+                int startindex = Properties.Settings.Default.Path.IndexOf("steamapps");
+                int endindex = Properties.Settings.Default.Path.IndexOf("\\\\", startindex);
+                string sub = Properties.Settings.Default.Path.Substring(0, endindex + 2);
+                string workshop_path = Path.Combine(sub, "workshop\\\\content\\\\252950");
+                Properties.Settings.Default.Workshop_Path = workshop_path;
+            }
+            Properties.Settings.Default.Save();
+        }
+
+        private void GetMaps()
+        {
+            workshop_maps_combo.Items.Clear();
+            foreach(var folder in Directory.GetDirectories(Properties.Settings.Default.Workshop_Path))
+            {
+                foreach(var file in Directory.GetFiles(folder, "*.udk", SearchOption.AllDirectories))
+                {
+                    workshop_maps_combo.Items.Add(Path.GetFileNameWithoutExtension(file));
+                    WorkshopMapPaths.Add(file);
+                }
             }
         }
 
@@ -126,6 +170,7 @@ namespace RocketLauncher_GUI
                         { 
                             Properties.Settings.Default.Path = path.Remove(path.Length - 16);
                             Properties.Settings.Default.Save();
+                            GetPaths();
                             return;
 
                         }
@@ -137,6 +182,8 @@ namespace RocketLauncher_GUI
             }
 
         }
+
+      
 
         /*
          * Auto injector function
@@ -193,10 +240,17 @@ namespace RocketLauncher_GUI
         /* Check if dll is injected */
         private static bool IsModuleLoaded(String ModuleName)
         {
-            var q = from p in Process.GetProcessesByName("RocketLeague")
-                    from m in p.Modules.OfType<ProcessModule>()
-                    select m;
-            return q.Any(pm => pm.ModuleName.Contains(ModuleName));
+            try {
+                var q = from p in Process.GetProcessesByName("RocketLeague")
+                        from m in p.Modules.OfType<ProcessModule>()
+                        select m;
+                return q.Any(pm => pm.ModuleName.Contains(ModuleName));
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
         }
 
         /*
@@ -301,6 +355,75 @@ namespace RocketLauncher_GUI
             {
                 MessageBox.Show("Error running WinPcap installer, check connection");
             }
+        }
+
+        private void refresh_maps_Click(object sender, RoutedEventArgs e)
+        {
+            GetPaths();
+            GetMaps();
+            //Thow this in here to enable 'Rocket League' menu bar
+            RLMenuBarInit();
+        }
+
+        private void restore_map_Click(object sender, RoutedEventArgs e)
+        {
+            if (Properties.Settings.Default.Workshop_Path != String.Empty && Properties.Settings.Default.Workshop_Path != String.Empty)
+            {
+
+                string cooked_path = Properties.Settings.Default.Cooked_Path;
+                string parkp_path = Path.Combine(cooked_path, ParkPFile);
+                try
+                {
+                    
+                    File.Delete(parkp_path);
+                    string backed_up = ParkPFile + ".bak";
+                    //Restore original map
+                    File.Copy(Path.Combine(cooked_path, backed_up), parkp_path);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Please close rocket league to restore the map");
+                }
+            }
+        }
+
+        private void swap_map_Click(object sender, RoutedEventArgs e)
+        {
+            string ws_path = Properties.Settings.Default.Workshop_Path;
+            string cooked_path = Properties.Settings.Default.Cooked_Path;
+            string parkp_path = Path.Combine(cooked_path, ParkPFile);
+            int index;
+
+            if (workshop_maps_combo.SelectedIndex < 0)
+            {
+                MessageBox.Show("Please select a workshop map");
+                return;
+            }
+            else
+            {
+                index = workshop_maps_combo.SelectedIndex;
+            }
+            
+
+            try
+            {
+                string backed_up = ParkPFile + ".bak";
+                //Back up file
+                if (!File.Exists(Path.Combine(cooked_path, backed_up)))
+                {
+                    File.Copy(parkp_path, Path.Combine(cooked_path, backed_up));
+                }
+                
+                File.Delete(parkp_path);
+                string selectedMap = WorkshopMapPaths[index];
+                File.Copy(selectedMap, parkp_path);       
+                
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Please close rocket league to swap maps");
+            }
+
         }
     }
 }
