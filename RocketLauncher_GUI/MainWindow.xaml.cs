@@ -22,7 +22,7 @@ namespace RocketLauncher_GUI
         Thread updateThread;
         volatile static bool abort = false;
         List<string> WorkshopMapPaths = new List<string>();
-        string ParkPFile = "Park_P.upk";
+        string ParkPFile = "Labs_DoubleGoal_V2_P.upk";
 
         // Import c++ inject function
         [DllImport("Injector.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -373,12 +373,19 @@ namespace RocketLauncher_GUI
                 string parkp_path = Path.Combine(cooked_path, ParkPFile);
                 try
                 {
-                    
-                    File.Delete(parkp_path);
                     string backed_up = ParkPFile + ".bak";
-                    //Restore original map
-                    File.Copy(Path.Combine(cooked_path, backed_up), parkp_path);
-                    swap_label.Content = "Original Park P Restored";
+                    if (File.Exists(Path.Combine(cooked_path, backed_up)))
+                    {
+                        File.Delete(parkp_path);
+                        //Restore original map
+                        File.Copy(Path.Combine(cooked_path, backed_up), parkp_path);
+                        swap_label.Content = "Original Double Goal Map Restored";
+                    }
+                    else
+                    {
+                        swap_label.Content = "Original Already Exists";
+                    }
+                    
                 }
                 catch (Exception)
                 {
