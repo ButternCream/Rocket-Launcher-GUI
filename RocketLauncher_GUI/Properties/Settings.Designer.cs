@@ -82,5 +82,17 @@ namespace RocketLauncher_GUI.Properties {
                 this["Cooked_Path"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int Map_Index {
+            get {
+                return ((int)(this["Map_Index"]));
+            }
+            set {
+                this["Map_Index"] = value;
+            }
+        }
     }
 }

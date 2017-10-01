@@ -129,6 +129,10 @@ namespace RocketLauncher_GUI
                 procWatcher.IsBackground = true;
                 procWatcher.Start();
             }
+            if (Properties.Settings.Default.Map_Index >= 0)
+            {
+                workshop_maps_combo.SelectedIndex = Properties.Settings.Default.Map_Index;
+            }
             
         }
 
@@ -466,6 +470,12 @@ namespace RocketLauncher_GUI
                 MessageBox.Show("Please close rocket league to swap maps");
             }
 
+        }
+
+        private void save_index(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            Properties.Settings.Default.Map_Index = workshop_maps_combo.SelectedIndex;
+            Properties.Settings.Default.Save();
         }
     }
 }
