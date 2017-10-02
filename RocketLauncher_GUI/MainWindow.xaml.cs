@@ -24,7 +24,7 @@ namespace RocketLauncher_GUI
         volatile static bool abort = false;
         volatile static bool auto_inject = Properties.Settings.Default.AutoLoadMods;
         List<string> WorkshopMapPaths = new List<string>();
-        string ParkPFile = "Labs_DoubleGoal_V2_P.upk";
+        string UnderpassFile = "Labs_Underpass_P.upk";
 
         // Import c++ inject function
         [DllImport("Injector.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -337,6 +337,7 @@ namespace RocketLauncher_GUI
             {
                 List<string> serverList = new List<string>() { IP.Text };
                 Support_Files.Simulator.Intercept(serverList);
+                MessageBox.Show("Running. Go to 'join local match' in RL");
             }
             catch (Exception)
             {
@@ -400,6 +401,10 @@ namespace RocketLauncher_GUI
             GetMaps();
             //Thow this in here to enable 'Rocket League' menu bar
             RLMenuBarInit();
+            if (Properties.Settings.Default.Map_Index >= 0)
+            {
+                workshop_maps_combo.SelectedIndex = Properties.Settings.Default.Map_Index;
+            }
         }
 
         private void restore_map_Click(object sender, RoutedEventArgs e)
@@ -408,16 +413,16 @@ namespace RocketLauncher_GUI
             {
 
                 string cooked_path = Properties.Settings.Default.Cooked_Path;
-                string parkp_path = Path.Combine(cooked_path, ParkPFile);
+                string underpass_path = Path.Combine(cooked_path, UnderpassFile);
                 try
                 {
-                    string backed_up = ParkPFile + ".bak";
+                    string backed_up = UnderpassFile + ".bak";
                     if (File.Exists(Path.Combine(cooked_path, backed_up)))
                     {
-                        File.Delete(parkp_path);
+                        File.Delete(underpass_path);
                         //Restore original map
-                        File.Copy(Path.Combine(cooked_path, backed_up), parkp_path);
-                        swap_label.Content = "Original Double Goals Map Restored Successfully";
+                        File.Copy(Path.Combine(cooked_path, backed_up), underpass_path);
+                        swap_label.Content = "Original Underpass Restored Successfully";
                     }
                     else
                     {
@@ -436,7 +441,7 @@ namespace RocketLauncher_GUI
         {
             string ws_path = Properties.Settings.Default.Workshop_Path;
             string cooked_path = Properties.Settings.Default.Cooked_Path;
-            string parkp_path = Path.Combine(cooked_path, ParkPFile);
+            string underpass_path = Path.Combine(cooked_path, UnderpassFile);
             int index;
 
             if (workshop_maps_combo.SelectedIndex < 0)
@@ -452,17 +457,17 @@ namespace RocketLauncher_GUI
 
             try
             {
-                string backed_up = ParkPFile + ".bak";
+                string backed_up = UnderpassFile + ".bak";
                 //Back up file
                 if (!File.Exists(Path.Combine(cooked_path, backed_up)))
                 {
-                    File.Copy(parkp_path, Path.Combine(cooked_path, backed_up));
+                    File.Copy(underpass_path, Path.Combine(cooked_path, backed_up));
                 }
                 
-                File.Delete(parkp_path);
+                File.Delete(underpass_path);
                 string selectedMap = WorkshopMapPaths[index];
-                File.Copy(selectedMap, parkp_path);
-                swap_label.Content = "Swapped Successfully With Double Goals Map";
+                File.Copy(selectedMap, underpass_path);
+                swap_label.Content = "Swapped Successfully With Underpass";
                 
             }
             catch (Exception)
