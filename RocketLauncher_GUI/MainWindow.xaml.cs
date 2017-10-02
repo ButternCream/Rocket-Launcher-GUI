@@ -226,7 +226,7 @@ namespace RocketLauncher_GUI
                     if (procs.Length > 0)
                     {
                         
-                        Thread.Sleep(15000);
+                        Thread.Sleep(5000);
                         if (!IsModuleLoaded("RLModding.dll"))
                         {
                             Console.WriteLine("Injecting");
