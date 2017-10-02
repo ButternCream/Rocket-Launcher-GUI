@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RocketLauncher_GUI"
         mc:Ignorable="d"
-        Title="Rocket Launcher 3.0" Height="196.242" Width="305" ResizeMode="NoResize">
+        Title="Rocket Launcher 3.0" Height="196.242" Width="305" ResizeMode="NoResize" Closing="delete_pcap">
 
     <Grid>
         <DockPanel HorizontalAlignment="Stretch">

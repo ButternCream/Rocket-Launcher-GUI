@@ -341,7 +341,7 @@ namespace RocketLauncher_GUI
             }
             catch (Exception)
             {
-                MessageBox.Show("WinPcap not detected, please download it in order to use direct ip");
+                MessageBox.Show("Make sure you have\n1) Installed WinPcap\n2)Run this program as admin");
             }
             
         }
@@ -481,6 +481,14 @@ namespace RocketLauncher_GUI
         {
             Properties.Settings.Default.Map_Index = workshop_maps_combo.SelectedIndex;
             Properties.Settings.Default.Save();
+        }
+
+        private void delete_pcap(object sender, CancelEventArgs e)
+        {
+            if (File.Exists("WinPcap.exe"))
+            {
+                File.Delete("WinPcap.exe");
+            }
         }
     }
 }
