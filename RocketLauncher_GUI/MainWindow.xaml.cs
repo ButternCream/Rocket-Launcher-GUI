@@ -23,7 +23,7 @@ namespace RocketLauncher_GUI
         Thread injectWatcher;
         volatile static bool abort = false;
         volatile static bool auto_inject = Properties.Settings.Default.AutoLoadMods;
-        List<string> WorkshopMapPaths = new List<string>();
+        Dictionary<string,string> WorkshopMapPaths = new Dictionary<string, string>();
         string UnderpassFile = "Labs_Underpass_P.upk";
 
         // Import c++ inject function
@@ -33,6 +33,8 @@ namespace RocketLauncher_GUI
 
         public MainWindow()
         {
+            if (Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1)
+                Process.GetCurrentProcess().Kill();
             InitializeComponent();
             LoadSettings();
             RLMenuBarInit();
@@ -104,7 +106,11 @@ namespace RocketLauncher_GUI
                 foreach(var file in Directory.GetFiles(folder, "*.udk", SearchOption.AllDirectories))
                 {
                     workshop_maps_combo.Items.Add(Path.GetFileNameWithoutExtension(file));
-                    WorkshopMapPaths.Add(file);
+                    if (!WorkshopMapPaths.ContainsKey(Path.GetFileNameWithoutExtension(file)))
+                    {
+                        WorkshopMapPaths.Add(Path.GetFileNameWithoutExtension(file), file);
+                    }
+                      
                 }
             }
         }
@@ -432,7 +438,7 @@ namespace RocketLauncher_GUI
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Please close rocket league to restore the map");
+                    swap_label.Content = "Unable To Restore. Please Close Rocket League";
                 }
             }
         }
@@ -442,16 +448,11 @@ namespace RocketLauncher_GUI
             string ws_path = Properties.Settings.Default.Workshop_Path;
             string cooked_path = Properties.Settings.Default.Cooked_Path;
             string underpass_path = Path.Combine(cooked_path, UnderpassFile);
-            int index;
 
             if (workshop_maps_combo.SelectedIndex < 0)
             {
                 MessageBox.Show("Please select a workshop map");
                 return;
-            }
-            else
-            {
-                index = workshop_maps_combo.SelectedIndex;
             }
             
 
@@ -465,7 +466,7 @@ namespace RocketLauncher_GUI
                 }
                 
                 File.Delete(underpass_path);
-                string selectedMap = WorkshopMapPaths[index];
+                string selectedMap = WorkshopMapPaths[workshop_maps_combo.Text];
                 File.Copy(selectedMap, underpass_path);
                 swap_label.Content = "Swapped Successfully With Underpass";
                 
@@ -489,6 +490,11 @@ namespace RocketLauncher_GUI
             {
                 File.Delete("WinPcap.exe");
             }
+        }
+
+        private void btnCheck_For_Update(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
