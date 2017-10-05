@@ -26,6 +26,7 @@ namespace RocketLauncher_GUI
         Dictionary<string,string> WorkshopMapPaths = new Dictionary<string, string>();
         string UnderpassFile = "Labs_Underpass_P.upk";
 
+
         // Import c++ inject function
         [DllImport("Injector.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -33,22 +34,42 @@ namespace RocketLauncher_GUI
 
         public MainWindow()
         {
-            if (Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1)
+            if (Process.GetProcessesByName(Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1)
                 Process.GetCurrentProcess().Kill();
+            Logger("Initing Program");
             InitializeComponent();
+            Logger("Loading Settings");
             LoadSettings();
+            Logger("Initiating menu bar");
             RLMenuBarInit();
+            Logger("Getting paths");
             GetPaths();
+            Logger("Getting maps");
             GetMaps();
+            Logger("Checking if injected");
             if (IsModuleLoaded("RLModding"))
             {
                 injectLbl.Content = "Injected";
             }
+            Logger("Starting RL check thread");
             //Start thread to check if RL is running / if dll is injected
             updateThread = new Thread(new ThreadStart(CheckForRL));
             updateThread.Name = "Update Thread";
             updateThread.IsBackground = true;
             updateThread.Start();
+        }
+
+        public static void Logger(String lines)
+        {
+
+            // Write the string to a file.append mode is enabled so that the log
+            // lines get appended to  test.txt than wiping content and writing the log
+
+            StreamWriter file = new System.IO.StreamWriter(Directory.GetCurrentDirectory() + "/RL.log", true);
+            file.WriteLine(lines);
+
+            file.Close();
+
         }
 
         /*
@@ -73,7 +94,7 @@ namespace RocketLauncher_GUI
             {
                 return;
             }
-
+            Logger("Has CookedPC path and Workshop path");
             if (Properties.Settings.Default.Cooked_Path == String.Empty && Properties.Settings.Default.Path != String.Empty)
             {
                 int startindex = Properties.Settings.Default.Path.IndexOf("rocketleague");
@@ -90,6 +111,7 @@ namespace RocketLauncher_GUI
                 string workshop_path = Path.Combine(sub, "workshop\\\\content\\\\252950");
                 Properties.Settings.Default.Workshop_Path = workshop_path;
             }
+            Logger("Saving CookedPC path and Workshop path");
             Properties.Settings.Default.Save();
         }
 
@@ -99,7 +121,7 @@ namespace RocketLauncher_GUI
             {
                 return;
             }
-
+            Logger("Populating workshop maps");
             workshop_maps_combo.Items.Clear();
             foreach(var folder in Directory.GetDirectories(Properties.Settings.Default.Workshop_Path))
             {
@@ -121,9 +143,10 @@ namespace RocketLauncher_GUI
         private void LoadSettings()
         {
             btnAutoLoadMods.IsChecked = Properties.Settings.Default.AutoLoadMods;
+            btnSound.IsChecked = Properties.Settings.Default.Sound;
             if (btnAutoLoadMods.IsChecked && !IsModuleLoaded("RLModding.dll"))
             {
-                Console.WriteLine("Started AutoLoad thread");
+                Logger("Started AutoLoad thread");
                 abort = false;
                 injectWatcher = new Thread(() => AutoLoadMods());
                 injectWatcher.IsBackground = true;
@@ -131,6 +154,7 @@ namespace RocketLauncher_GUI
             }
             if (Properties.Settings.Default.Path == String.Empty)
             {
+                Logger("Starting thread to get proc info");
                 procWatcher = new Thread(new ThreadStart(GetProcInfo));
                 procWatcher.IsBackground = true;
                 procWatcher.Start();
@@ -164,7 +188,7 @@ namespace RocketLauncher_GUI
                 }
                 else if (auto_inject && !injectWatcher.IsAlive)
                 {
-                    Console.WriteLine("Starting auto inject after close");
+                    Logger("Starting auto inject via CheckForRL");
                     injectWatcher = new Thread(() => AutoLoadMods());
                     injectWatcher.IsBackground = true;
                     injectWatcher.Start();
@@ -203,12 +227,14 @@ namespace RocketLauncher_GUI
                         { 
                             Properties.Settings.Default.Path = path.Remove(path.Length - 16);
                             Properties.Settings.Default.Save();
+                            Logger("Found path! " + Properties.Settings.Default.Path);
                             GetPaths();
                             return;
 
                         }
                     } catch (Exception e)
                     {
+                        Logger("Exception: " + e.ToString());
                         return;
                     }
                 } else { Thread.Sleep(2000); }
@@ -232,13 +258,17 @@ namespace RocketLauncher_GUI
                     if (procs.Length > 0)
                     {
                         
-                        Thread.Sleep(5000);
+                        Thread.Sleep(6000);
                         if (!IsModuleLoaded("RLModding.dll"))
                         {
-                            Console.WriteLine("Injecting");
-                            System.Media.SoundPlayer sound = new System.Media.SoundPlayer(@"C:\Windows\Media\chimes.wav");
-                            sound.Play();
+                            Logger("Injecting");
+                            
                             injected = Inject();
+                            if (Properties.Settings.Default.Sound && injected)
+                            {
+                                System.Media.SoundPlayer sound = new System.Media.SoundPlayer(@"C:\Windows\Media\chimes.wav");
+                                sound.Play();
+                            }
                         }
                     }
                     else { Thread.Sleep(1000); }
@@ -261,8 +291,11 @@ namespace RocketLauncher_GUI
             {
                 if (Inject())
                 {
-                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(@"C:\Windows\Media\chimes.wav");
-                    sound.Play();
+                    if (Properties.Settings.Default.Sound)
+                    {
+                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(@"C:\Windows\Media\chimes.wav");
+                        sound.Play();
+                    }
                     injectLbl.Content = "Injected";
                 }
                 
@@ -282,8 +315,9 @@ namespace RocketLauncher_GUI
                             select m;
                     return q.Any(pm => pm.ModuleName.Contains(ModuleName));
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Logger("Exception: " + e.ToString());
                     return false;
                 }
             }
@@ -304,7 +338,7 @@ namespace RocketLauncher_GUI
             Properties.Settings.Default.Save();
             if (btnAutoLoadMods.IsChecked && !IsModuleLoaded("RLModding.dll"))
             {
-                Console.WriteLine("Started AutoLoad thread");
+                Logger("Started AutoLoad thread");
                 abort = false;
                 injectWatcher = new Thread(() => AutoLoadMods());
                 injectWatcher.IsBackground = true;
@@ -313,7 +347,7 @@ namespace RocketLauncher_GUI
             }
             else if (!btnAutoLoadMods.IsChecked)
             {
-                Console.WriteLine("Aborting AutoLoad thread");
+                Logger("Abort set for AutoLoad thread");
                 abort = true;
                 auto_inject = false;
             }
@@ -345,9 +379,10 @@ namespace RocketLauncher_GUI
                 Support_Files.Simulator.Intercept(serverList);
                 MessageBox.Show("Running. Go to 'join local match' in RL");
             }
-            catch (Exception)
+            catch (Exception exc)
             {
                 MessageBox.Show("Make sure you have\n1) Installed WinPcap\n2)Run this program as admin");
+                Logger("Exception: " + exc.ToString());
             }
             
         }
@@ -370,8 +405,9 @@ namespace RocketLauncher_GUI
                 wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
                 wc.DownloadFileCompleted += new AsyncCompletedEventHandler(wc_DownloadFileCompleted);
             }
-            catch (Exception)
+            catch (Exception exc)
             {
+                Logger("Exception: " + exc.ToString());
                 return;
             }
 
@@ -403,6 +439,7 @@ namespace RocketLauncher_GUI
 
         private void refresh_maps_Click(object sender, RoutedEventArgs e)
         {
+            Logger("Refreshing maps");
             GetPaths();
             GetMaps();
             //Thow this in here to enable 'Rocket League' menu bar
@@ -429,16 +466,19 @@ namespace RocketLauncher_GUI
                         //Restore original map
                         File.Copy(Path.Combine(cooked_path, backed_up), underpass_path);
                         swap_label.Content = "Original Underpass Restored Successfully";
+                        Logger("Original Underpass Restored Successfully");
                     }
                     else
                     {
                         swap_label.Content = "Original Already Exists";
+                        Logger("Original Already Exists");
                     }
                     
                 }
-                catch (Exception)
+                catch (Exception exc)
                 {
                     swap_label.Content = "Unable To Restore. Please Close Rocket League";
+                    Logger("Exception: " + exc.ToString());
                 }
             }
         }
@@ -463,17 +503,20 @@ namespace RocketLauncher_GUI
                 if (!File.Exists(Path.Combine(cooked_path, backed_up)))
                 {
                     File.Copy(underpass_path, Path.Combine(cooked_path, backed_up));
+                    Logger("Backed up underpass");
                 }
                 
                 File.Delete(underpass_path);
                 string selectedMap = WorkshopMapPaths[workshop_maps_combo.Text];
                 File.Copy(selectedMap, underpass_path);
                 swap_label.Content = "Swapped Successfully With Underpass";
-                
+                Logger("Swapped with underpass");
+
             }
-            catch (Exception)
+            catch (Exception exc)
             {
                 MessageBox.Show("Please close rocket league to swap maps");
+                Logger("Exception: " + exc.ToString());
             }
 
         }
@@ -488,13 +531,20 @@ namespace RocketLauncher_GUI
         {
             if (File.Exists("WinPcap.exe"))
             {
+                Logger("Deleting WinPCap download");
                 File.Delete("WinPcap.exe");
             }
         }
 
         private void btnCheck_For_Update(object sender, RoutedEventArgs e)
         {
+            // TODO
+        }
 
+        private void btnSound_Clicked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.Sound = btnSound.IsChecked;
+            Properties.Settings.Default.Save();
         }
     }
 }

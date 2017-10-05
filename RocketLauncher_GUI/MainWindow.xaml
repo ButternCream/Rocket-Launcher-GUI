@@ -21,6 +21,7 @@
                 </MenuItem>
                 <MenuItem x:Name="btnSettings" Header="Settings">
                     <MenuItem x:Name="btnAutoLoadMods" Header="Auto Load Mods" IsCheckable="True" Click="btnAutoLoadMods_Clicked"/>
+                    <MenuItem x:Name="btnSound" Header="Sound Notification" IsCheckable="True" Click="btnSound_Clicked"/>
                 </MenuItem>
                 <MenuItem x:Name="btnDonate" Header="Donate" Click="btnDonate_Click"/>
                 <MenuItem Visibility="Hidden" x:Name="btnUpdate" Header="Update" Click="btnCheck_For_Update"/>
