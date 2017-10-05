@@ -106,5 +106,41 @@ namespace RocketLauncher_GUI.Properties {
                 this["Sound"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsBeta {
+            get {
+                return ((bool)(this["IsBeta"]));
+            }
+            set {
+                this["IsBeta"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BetaVersion {
+            get {
+                return ((int)(this["BetaVersion"]));
+            }
+            set {
+                this["BetaVersion"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ReleaseVersion {
+            get {
+                return ((int)(this["ReleaseVersion"]));
+            }
+            set {
+                this["ReleaseVersion"] = value;
+            }
+        }
     }
 }

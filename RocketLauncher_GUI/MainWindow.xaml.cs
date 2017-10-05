@@ -31,6 +31,9 @@ namespace RocketLauncher_GUI
         [DllImport("Injector.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool Inject();
+        [DllImport("Injector.dll", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool Inject_Beta();
 
         public MainWindow()
         {
@@ -47,7 +50,7 @@ namespace RocketLauncher_GUI
             Logger("Getting maps");
             GetMaps();
             Logger("Checking if injected");
-            if (IsModuleLoaded("RLModding"))
+            if (IsModuleLoaded("RLModding.dll"))
             {
                 injectLbl.Content = "Injected";
             }
@@ -144,6 +147,7 @@ namespace RocketLauncher_GUI
         {
             btnAutoLoadMods.IsChecked = Properties.Settings.Default.AutoLoadMods;
             btnSound.IsChecked = Properties.Settings.Default.Sound;
+            btnBeta.IsChecked = Properties.Settings.Default.IsBeta;
             if (btnAutoLoadMods.IsChecked && !IsModuleLoaded("RLModding.dll"))
             {
                 Logger("Started AutoLoad thread");
@@ -171,10 +175,12 @@ namespace RocketLauncher_GUI
          */
         private void CheckForRL()
         {
+            Logger("In CheckForRL");
             while (true)
             {
                 if (Process.GetProcessesByName("RocketLeague").Length < 1)
                 {
+                    Logger("Rocket League not running. updating injection status");
                     // Change inject label using delegate callback
                     updateLabel delUpadte = new updateLabel(UpdateUI);
                     this.injectLbl.Dispatcher.BeginInvoke(delUpadte, "Not Injected");
@@ -182,6 +188,7 @@ namespace RocketLauncher_GUI
                 }
                 else if (IsModuleLoaded("RLModding.dll"))
                 {
+                    Logger("Module injected. updating injection status");
                     // Change inject label using delegate callback
                     updateLabel delUpadte = new updateLabel(UpdateUI);
                     this.injectLbl.Dispatcher.BeginInvoke(delUpadte, "Injected");
@@ -263,7 +270,7 @@ namespace RocketLauncher_GUI
                         {
                             Logger("Injecting");
                             
-                            injected = Inject();
+                            injected = Properties.Settings.Default.IsBeta ? Inject_Beta() : Inject();
                             if (Properties.Settings.Default.Sound && injected)
                             {
                                 System.Media.SoundPlayer sound = new System.Media.SoundPlayer(@"C:\Windows\Media\chimes.wav");
@@ -289,7 +296,18 @@ namespace RocketLauncher_GUI
         {
             if (!IsModuleLoaded("RLModding.dll"))
             {
-                if (Inject())
+                if (Properties.Settings.Default.IsBeta && Inject_Beta())
+                {
+                    
+                    if (Properties.Settings.Default.Sound)
+                    {
+                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(@"C:\Windows\Media\chimes.wav");
+                        sound.Play();
+                    }
+                    injectLbl.Content = "Injected";
+                    Logger("Injected Beta DLL");
+                }
+                else if (Inject())
                 {
                     if (Properties.Settings.Default.Sound)
                     {
@@ -297,8 +315,13 @@ namespace RocketLauncher_GUI
                         sound.Play();
                     }
                     injectLbl.Content = "Injected";
+                    Logger("Injected Release DLL");
                 }
-                
+                else
+                {
+                    Logger("Couldn't Inject");
+                }
+
             }
               
         }
@@ -306,6 +329,7 @@ namespace RocketLauncher_GUI
         /* Check if dll is injected */
         private static bool IsModuleLoaded(String ModuleName)
         {
+            Logger("In isModuleLoaded");
             if (Process.GetProcessesByName("RocketLeague").Length > 0)
             {
                 try
@@ -538,13 +562,142 @@ namespace RocketLauncher_GUI
 
         private void btnCheck_For_Update(object sender, RoutedEventArgs e)
         {
-            // TODO
+            bool updated = false;
+            if (Properties.Settings.Default.IsBeta && CheckForUpdatedBetaDLL())
+            {
+                MessageBox.Show("A new version of the beta DLL has been found and downloaded");
+                updated = true;
+            }
+            if (CheckForUpdatedReleaseDLL())
+            {
+                MessageBox.Show("A new version of the DLL has been found and downloaded");
+                updated = true;
+            }
+            if (!updated)
+            {
+                MessageBox.Show("No new updates were found");
+            }
         }
+
+     
 
         private void btnSound_Clicked(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.Sound = btnSound.IsChecked;
             Properties.Settings.Default.Save();
+        }
+
+        private void btnBeta_Clicked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.IsBeta = btnBeta.IsChecked;
+            Properties.Settings.Default.Save();
+            CheckForUpdatedBetaDLL();
+        }
+
+        private bool CheckForUpdatedBetaDLL()
+        {
+            var mainfest_url = "https://hack.fyi/rlmods/beta/version.txt";
+            int version = 0;
+            try
+            {
+                version = Int32.Parse((new WebClient()).DownloadString(mainfest_url));
+            }
+            catch (Exception e)
+            {
+                Logger("Exception: " + e.ToString());
+                return false;
+            }
+            if (version > Properties.Settings.Default.BetaVersion)
+            {
+                DownloadBetaDLL();
+                Properties.Settings.Default.BetaVersion = version;
+                Properties.Settings.Default.Save();
+                return true;
+            }
+            return false;
+        }
+
+        private bool CheckForUpdatedReleaseDLL()
+        {
+            var mainfest_url = "https://hack.fyi/rlmods/release/version.txt";
+            int version = 0;
+            try
+            {
+                version = Int32.Parse((new WebClient()).DownloadString(mainfest_url));
+            }
+            catch (Exception e)
+            {
+                Logger("Exception: " + e.ToString());
+                return false;
+            }
+            
+            if (version > Properties.Settings.Default.ReleaseVersion)
+            {
+                DownloadReleaseDLL();
+                Properties.Settings.Default.ReleaseVersion = version;
+                Properties.Settings.Default.Save();
+                return true;
+            }
+            return false;
+        }
+
+        private void DownloadReleaseDLL()
+        {
+            string beta_file = Directory.GetCurrentDirectory() + "/Release/RLModding.dll";
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + "/Release"))
+            {
+                Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/Release");
+            }
+            Uri dll = new Uri("https://hack.fyi/rlmods/beta/RLModding_Beta.dll");
+            if (File.Exists(beta_file))
+            {
+                if (File.Exists(beta_file + ".old"))
+                {
+                    File.Delete(beta_file + ".old");
+                }
+                File.Copy(beta_file, beta_file + ".old");
+
+            }
+            try
+            {
+                WebClient wc = new WebClient();
+                wc.DownloadFileAsync(uri, beta_file);
+            }
+            catch (Exception exc)
+            {
+                Logger("Exception: " + exc.ToString());
+                
+            }
+        }
+
+        private void DownloadBetaDLL()
+        {
+            string beta_file= Directory.GetCurrentDirectory() + "/Beta/RLModding.dll";
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + "/Beta"))
+            {
+                Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/Beta");
+            }
+            Uri dll = new Uri("https://hack.fyi/rlmods/beta/RLModding_Beta.dll");
+            if (File.Exists(beta_file))
+            {
+                if (File.Exists(beta_file + ".old"))
+                {
+                    File.Delete(beta_file + ".old");
+                }
+                File.Copy(beta_file, beta_file + ".old");
+
+            }
+            try
+            {
+                WebClient wc = new WebClient();
+                wc.DownloadFileAsync(uri, beta_file);
+            } catch (Exception exc)
+            {
+                Logger("Exception: " + exc.ToString());
+;            }
+            
+            
+
         }
     }
 }

@@ -13,7 +13,42 @@ namespace Injector {
 
 		// Get the dll's full path name 
 		wchar_t buf[MAX_PATH] = { 0 };
-		GetFullPathNameW(L"RLModding.dll", MAX_PATH, buf, NULL);
+		GetFullPathNameW(L"Release/RLModding.dll", MAX_PATH, buf, NULL);
+
+		HANDLE Proc;
+		HMODULE hLib;
+		LPVOID RemoteString, LoadLibAddy;
+
+		if (!pID)
+			return false;
+
+		Proc = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pID);
+		if (!Proc)
+		{
+			return false;
+		}
+
+		LoadLibAddy = (LPVOID)GetProcAddress(GetModuleHandleA("kernel32.dll"), "LoadLibraryW");
+
+		// Allocate space in the process for our DLL 
+		RemoteString = (LPVOID)VirtualAllocEx(Proc, NULL, sizeof(buf), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+
+		// Write the string name of our DLL in the memory allocated 
+		WriteProcessMemory(Proc, (LPVOID)RemoteString, buf, sizeof(buf), NULL);
+
+		// Load our DLL 
+		CreateRemoteThread(Proc, NULL, NULL, (LPTHREAD_START_ROUTINE)LoadLibAddy, (LPVOID)RemoteString, NULL, NULL);
+
+		CloseHandle(Proc);
+		return true;
+	}
+
+	extern "C" __declspec(dllexport) bool Inject_Beta() {
+		DWORD pID = GetTargetThreadIDFromProcName(L"RocketLeague.exe");
+
+		// Get the dll's full path name 
+		wchar_t buf[MAX_PATH] = { 0 };
+		GetFullPathNameW(L"Beta/RLModding.dll", MAX_PATH, buf, NULL);
 
 		HANDLE Proc;
 		HMODULE hLib;

@@ -6,5 +6,6 @@
 
 namespace Injector {
 	extern "C" __declspec(dllexport) bool Inject();
+	extern "C" __declspec(dllexport) bool Inject_Beta();
 	DWORD GetTargetThreadIDFromProcName(const wchar_t * ProcName);
 }
