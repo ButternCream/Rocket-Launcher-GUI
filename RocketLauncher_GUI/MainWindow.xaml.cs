@@ -39,8 +39,11 @@ namespace RocketLauncher_GUI
         {
             if (Process.GetProcessesByName(Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1)
                 Process.GetCurrentProcess().Kill();
+            ClearLog();
             Logger("Initing Program");
             InitializeComponent();
+            if (!Properties.Settings.Default.NoNotifyUpdate)
+                CheckForUpdates();
             Logger("Loading Settings");
             LoadSettings();
             Logger("Initiating menu bar");
@@ -62,13 +65,20 @@ namespace RocketLauncher_GUI
             updateThread.Start();
         }
 
+        private static void ClearLog()
+        {
+            StreamWriter file = new StreamWriter(Directory.GetCurrentDirectory() + "/RL.log", false);
+            file.Write(String.Empty);
+            file.Close();
+        }
+
         public static void Logger(String lines)
         {
 
             // Write the string to a file.append mode is enabled so that the log
             // lines get appended to  test.txt than wiping content and writing the log
 
-            StreamWriter file = new System.IO.StreamWriter(Directory.GetCurrentDirectory() + "/RL.log", true);
+            StreamWriter file = new StreamWriter(Directory.GetCurrentDirectory() + "/RL.log", true);
             file.WriteLine(lines);
 
             file.Close();
@@ -562,24 +572,17 @@ namespace RocketLauncher_GUI
 
         private void btnCheck_For_Update(object sender, RoutedEventArgs e)
         {
-            bool updated = false;
-            if (Properties.Settings.Default.IsBeta && CheckForUpdatedBetaDLL())
-            {
-                MessageBox.Show("A new version of the beta DLL has been found and downloaded");
-                updated = true;
-            }
-            if (CheckForUpdatedReleaseDLL())
-            {
-                MessageBox.Show("A new version of the DLL has been found and downloaded");
-                updated = true;
-            }
-            if (!updated)
-            {
-                MessageBox.Show("No new updates were found");
-            }
+            CheckForUpdates();
         }
 
-     
+        private void CheckForUpdates()
+        {
+            if ((Properties.Settings.Default.IsBeta && CheckForUpdatedBetaDLL()) || CheckForUpdatedReleaseDLL())
+            {
+                Properties.Settings.Default.NoNotifyUpdate = false;
+                Properties.Settings.Default.Save();
+            }       
+        }     
 
         private void btnSound_Clicked(object sender, RoutedEventArgs e)
         {
@@ -601,6 +604,7 @@ namespace RocketLauncher_GUI
             try
             {
                 version = Int32.Parse((new WebClient()).DownloadString(mainfest_url));
+                Logger(version.ToString());
             }
             catch (Exception e)
             {
@@ -609,10 +613,20 @@ namespace RocketLauncher_GUI
             }
             if (version > Properties.Settings.Default.BetaVersion)
             {
-                DownloadBetaDLL();
-                Properties.Settings.Default.BetaVersion = version;
-                Properties.Settings.Default.Save();
-                return true;
+                var res = System.Windows.MessageBox.Show("A beta update has been found. Would you like to download it?", "Update", MessageBoxButton.YesNo);
+                if (res == MessageBoxResult.Yes)
+                {
+                    DownloadBetaDLL();
+                    Properties.Settings.Default.BetaVersion = version;
+                    Properties.Settings.Default.Save();
+                    return true;
+                }
+                else
+                {
+                    Properties.Settings.Default.NoNotifyUpdate = true;
+                    Properties.Settings.Default.Save();
+                    return false;
+                }
             }
             return false;
         }
@@ -624,6 +638,7 @@ namespace RocketLauncher_GUI
             try
             {
                 version = Int32.Parse((new WebClient()).DownloadString(mainfest_url));
+                Logger(version.ToString());
             }
             catch (Exception e)
             {
@@ -633,10 +648,20 @@ namespace RocketLauncher_GUI
             
             if (version > Properties.Settings.Default.ReleaseVersion)
             {
-                DownloadReleaseDLL();
-                Properties.Settings.Default.ReleaseVersion = version;
-                Properties.Settings.Default.Save();
-                return true;
+                var res = System.Windows.MessageBox.Show("A new DLL has been found. Would you like to download it?", "Update", MessageBoxButton.YesNo);
+                if (res == MessageBoxResult.Yes)
+                {
+                    DownloadReleaseDLL();
+                    Properties.Settings.Default.ReleaseVersion = version;
+                    Properties.Settings.Default.Save();
+                    return true;
+                }
+                else
+                {
+                    Properties.Settings.Default.NoNotifyUpdate = true;
+                    Properties.Settings.Default.Save();
+                    return false;
+                }            
             }
             return false;
         }
@@ -648,7 +673,7 @@ namespace RocketLauncher_GUI
             {
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/Release");
             }
-            Uri dll = new Uri("https://hack.fyi/rlmods/beta/RLModding_Beta.dll");
+            Uri dll = new Uri("https://hack.fyi/rlmods/beta/RLModding.dll");
             if (File.Exists(beta_file))
             {
                 if (File.Exists(beta_file + ".old"))
@@ -672,7 +697,7 @@ namespace RocketLauncher_GUI
 
         private void DownloadBetaDLL()
         {
-            string beta_file= Directory.GetCurrentDirectory() + "/Beta/RLModding.dll";
+            string beta_file = Directory.GetCurrentDirectory() + "/Beta/RLModding.dll";
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "/Beta"))
             {
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/Beta");

@@ -142,5 +142,17 @@ namespace RocketLauncher_GUI.Properties {
                 this["ReleaseVersion"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool NoNotifyUpdate {
+            get {
+                return ((bool)(this["NoNotifyUpdate"]));
+            }
+            set {
+                this["NoNotifyUpdate"] = value;
+            }
+        }
     }
 }
