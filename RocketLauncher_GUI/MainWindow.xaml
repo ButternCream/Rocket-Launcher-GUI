@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RocketLauncher_GUI"
         mc:Ignorable="d"
-        Title="Rocket Launcher 3.0" Height="196.242" Width="305" ResizeMode="NoResize" Closing="delete_pcap">
+        Title="Rocket Launcher 3.1" Height="196.242" Width="305" ResizeMode="NoResize" Closing="delete_pcap">
 
     <Grid>
         <DockPanel HorizontalAlignment="Stretch">
@@ -22,7 +22,7 @@
                 <MenuItem x:Name="btnSettings" Header="Settings">
                     <MenuItem x:Name="btnAutoLoadMods" Header="Auto Load Mods" IsCheckable="True" Click="btnAutoLoadMods_Clicked"/>
                     <MenuItem x:Name="btnSound" Header="Sound Notification" IsCheckable="True" Click="btnSound_Clicked"/>
-                    <MenuItem x:Name="btnBeta" Header="Use Beta DLL" IsCheckable="True" Click="btnBeta_Clicked"/>
+                    <MenuItem x:Name="btnBeta" Header="Use Beta Release" IsCheckable="True" Click="btnBeta_Clicked"/>
                 </MenuItem>
                 <MenuItem x:Name="btnUpdate" Header="Update" Click="btnCheck_For_Update"/>
                 <MenuItem x:Name="btnDonate" Header="Donate" Click="btnDonate_Click"/>
