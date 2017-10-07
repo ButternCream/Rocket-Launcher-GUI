@@ -26,11 +26,11 @@
     <Setting Name="IsBeta" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="BetaVersion" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="BetaVersion" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">2017-10-06</Value>
     </Setting>
-    <Setting Name="ReleaseVersion" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="ReleaseVersion" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">2017-10-06</Value>
     </Setting>
     <Setting Name="NoNotifyUpdate" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

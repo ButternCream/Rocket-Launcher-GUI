@@ -121,10 +121,10 @@ namespace RocketLauncher_GUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int BetaVersion {
+        [global::System.Configuration.DefaultSettingValueAttribute("2017-10-06")]
+        public global::System.DateTime BetaVersion {
             get {
-                return ((int)(this["BetaVersion"]));
+                return ((global::System.DateTime)(this["BetaVersion"]));
             }
             set {
                 this["BetaVersion"] = value;
@@ -133,10 +133,10 @@ namespace RocketLauncher_GUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ReleaseVersion {
+        [global::System.Configuration.DefaultSettingValueAttribute("2017-10-06")]
+        public global::System.DateTime ReleaseVersion {
             get {
-                return ((int)(this["ReleaseVersion"]));
+                return ((global::System.DateTime)(this["ReleaseVersion"]));
             }
             set {
                 this["ReleaseVersion"] = value;

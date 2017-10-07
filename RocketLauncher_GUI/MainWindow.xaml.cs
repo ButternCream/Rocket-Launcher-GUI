@@ -46,8 +46,6 @@ namespace RocketLauncher_GUI
                 CheckForUpdates();
             Logger("Loading Settings");
             LoadSettings();
-            Logger("Initiating menu bar");
-            RLMenuBarInit();
             Logger("Getting paths");
             GetPaths();
             Logger("Getting maps");
@@ -77,27 +75,19 @@ namespace RocketLauncher_GUI
 
             // Write the string to a file.append mode is enabled so that the log
             // lines get appended to  test.txt than wiping content and writing the log
-
-            StreamWriter file = new StreamWriter(Directory.GetCurrentDirectory() + "/RL.log", true);
-            file.WriteLine(lines);
-
-            file.Close();
-
-        }
-
-        /*
-         * If user path has been found enable rocket league menu option 
-         */
-        private void RLMenuBarInit()
-        {
-            if (Properties.Settings.Default.Path == String.Empty)
+            try
             {
-                Rocket_League.IsEnabled = false;
+                StreamWriter file = new StreamWriter(Directory.GetCurrentDirectory() + "/RL.log", true);
+                file.WriteLine(lines);
+
+                file.Close();
             }
-            else
+            catch (Exception)
             {
-                Rocket_League.IsEnabled = true;
+
             }
+            
+
         }
 
         /* Get Workshop path and CookedPCConsole path */
@@ -226,12 +216,7 @@ namespace RocketLauncher_GUI
          * Get users RL path if it doesn't exists
          */
         private static void GetProcInfo()
-        {
-            if (Properties.Settings.Default.Path != String.Empty)
-            {
-                return;
-            }
-        
+        {   
             while (Properties.Settings.Default.Path == String.Empty)
             {
                 Process[] procs = Process.GetProcessesByName("RocketLeague");
@@ -390,8 +375,7 @@ namespace RocketLauncher_GUI
         /* Start RL */
         private void Start_Click(object sender, RoutedEventArgs e)
         {
-            String RL = Properties.Settings.Default.Path + "RocketLeague.exe";
-            Process.Start(RL);
+            Process.Start("steam://rungameid/252950");
         }
 
         /* Kill Rocket League Process */
@@ -476,8 +460,6 @@ namespace RocketLauncher_GUI
             Logger("Refreshing maps");
             GetPaths();
             GetMaps();
-            //Thow this in here to enable 'Rocket League' menu bar
-            RLMenuBarInit();
             if (Properties.Settings.Default.Map_Index >= 0)
             {
                 workshop_maps_combo.SelectedIndex = Properties.Settings.Default.Map_Index;
@@ -600,10 +582,10 @@ namespace RocketLauncher_GUI
         private bool CheckForUpdatedBetaDLL()
         {
             var mainfest_url = "https://hack.fyi/rlmods/beta/version.txt";
-            int version = 0;
+            DateTime version;
             try
             {
-                version = Int32.Parse((new WebClient()).DownloadString(mainfest_url));
+                version = DateTime.Parse(((new WebClient()).DownloadString(mainfest_url)));
                 Logger(version.ToString());
             }
             catch (Exception e)
@@ -611,7 +593,7 @@ namespace RocketLauncher_GUI
                 Logger("Exception: " + e.ToString());
                 return false;
             }
-            if (version > Properties.Settings.Default.BetaVersion)
+            if (version > Properties.Settings.Default.BetaVersion || !File.Exists(Directory.GetCurrentDirectory() + "/Beta/RLModding.dll"))
             {
                 var res = System.Windows.MessageBox.Show("A beta update has been found. Would you like to download it?", "Update", MessageBoxButton.YesNo);
                 if (res == MessageBoxResult.Yes)
@@ -634,10 +616,10 @@ namespace RocketLauncher_GUI
         private bool CheckForUpdatedReleaseDLL()
         {
             var mainfest_url = "https://hack.fyi/rlmods/release/version.txt";
-            int version = 0;
+            DateTime version;
             try
             {
-                version = Int32.Parse((new WebClient()).DownloadString(mainfest_url));
+                version = DateTime.Parse(((new WebClient()).DownloadString(mainfest_url)));
                 Logger(version.ToString());
             }
             catch (Exception e)
@@ -646,7 +628,7 @@ namespace RocketLauncher_GUI
                 return false;
             }
             
-            if (version > Properties.Settings.Default.ReleaseVersion)
+            if (version > Properties.Settings.Default.ReleaseVersion || !File.Exists(Directory.GetCurrentDirectory() + "/Release/RLModding.dll"))
             {
                 var res = System.Windows.MessageBox.Show("A new DLL has been found. Would you like to download it?", "Update", MessageBoxButton.YesNo);
                 if (res == MessageBoxResult.Yes)
