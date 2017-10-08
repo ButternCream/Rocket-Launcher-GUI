@@ -86,20 +86,20 @@
             this.startToolStripMenuItem,
             this.killToolStripMenuItem});
             this.rocketLeagueToolStripMenuItem.Name = "rocketLeagueToolStripMenuItem";
-            this.rocketLeagueToolStripMenuItem.Size = new System.Drawing.Size(96, 20);
+            this.rocketLeagueToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
             this.rocketLeagueToolStripMenuItem.Text = "Rocket League";
             // 
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
             // killToolStripMenuItem
             // 
             this.killToolStripMenuItem.Name = "killToolStripMenuItem";
-            this.killToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.killToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.killToolStripMenuItem.Text = "Kill";
             this.killToolStripMenuItem.Click += new System.EventHandler(this.killToolStripMenuItem_Click);
             // 
@@ -115,36 +115,34 @@
             // 
             // autoLoadModsToolStripMenuItem
             // 
-            this.autoLoadModsToolStripMenuItem.Checked = global::RocketLauncher_GUI.Properties.Settings.Default.AutoLoadMods;
+            this.autoLoadModsToolStripMenuItem.CheckOnClick = true;
             this.autoLoadModsToolStripMenuItem.Name = "autoLoadModsToolStripMenuItem";
-            this.autoLoadModsToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.autoLoadModsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.autoLoadModsToolStripMenuItem.Text = "Auto Load Mods";
             this.autoLoadModsToolStripMenuItem.CheckedChanged += new System.EventHandler(this.autoLoadModsToolStripMenuItem_CheckedChanged);
-            this.autoLoadModsToolStripMenuItem.Click += new System.EventHandler(this.autoLoadModsToolStripMenuItem_Click);
             // 
             // playSoundOnInjectToolStripMenuItem
             // 
-            this.playSoundOnInjectToolStripMenuItem.Checked = global::RocketLauncher_GUI.Properties.Settings.Default.SoundNotif;
+            this.playSoundOnInjectToolStripMenuItem.Checked = true;
             this.playSoundOnInjectToolStripMenuItem.CheckOnClick = true;
             this.playSoundOnInjectToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.playSoundOnInjectToolStripMenuItem.Name = "playSoundOnInjectToolStripMenuItem";
-            this.playSoundOnInjectToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.playSoundOnInjectToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.playSoundOnInjectToolStripMenuItem.Text = "Play Sound On Inject";
             this.playSoundOnInjectToolStripMenuItem.CheckedChanged += new System.EventHandler(this.playSoundOnInjectToolStripMenuItem_CheckedChanged);
             // 
             // useBetaChannelToolStripMenuItem
             // 
-            this.useBetaChannelToolStripMenuItem.Checked = global::RocketLauncher_GUI.Properties.Settings.Default.UseBetaVersion;
             this.useBetaChannelToolStripMenuItem.CheckOnClick = true;
             this.useBetaChannelToolStripMenuItem.Name = "useBetaChannelToolStripMenuItem";
-            this.useBetaChannelToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.useBetaChannelToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.useBetaChannelToolStripMenuItem.Text = "Use Beta Version";
             this.useBetaChannelToolStripMenuItem.CheckedChanged += new System.EventHandler(this.useBetaChannelToolStripMenuItem_CheckedChanged);
             // 
             // updateToolStripMenuItem
             // 
             this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-            this.updateToolStripMenuItem.Size = new System.Drawing.Size(80, 20);
+            this.updateToolStripMenuItem.Size = new System.Drawing.Size(78, 20);
             this.updateToolStripMenuItem.Text = "Update DLL";
             this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
             // 
@@ -203,11 +201,12 @@
             // creditsLabel
             // 
             this.creditsLabel.AutoSize = true;
+            this.creditsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.creditsLabel.Location = new System.Drawing.Point(6, 115);
             this.creditsLabel.Name = "creditsLabel";
-            this.creditsLabel.Size = new System.Drawing.Size(199, 13);
+            this.creditsLabel.Size = new System.Drawing.Size(236, 12);
             this.creditsLabel.TabIndex = 0;
-            this.creditsLabel.Text = "Created by ButterandCream, Two, Taylor";
+            this.creditsLabel.Text = "Created by ButterandCream, Two, Taylor, Dummiesman";
             // 
             // tabPage2
             // 
@@ -327,9 +326,10 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 115);
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(6, 115);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(94, 13);
+            this.label3.Size = new System.Drawing.Size(80, 12);
             this.label3.TabIndex = 0;
             this.label3.Text = "Credits to Thanrek";
             // 
@@ -362,7 +362,7 @@
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Rocket Launcher 3.2";
+            this.Text = " Rocket Launcher";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.mainMenuStrip.ResumeLayout(false);
