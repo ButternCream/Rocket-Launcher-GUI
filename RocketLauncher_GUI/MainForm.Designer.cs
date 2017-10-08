@@ -120,6 +120,7 @@
             this.autoLoadModsToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.autoLoadModsToolStripMenuItem.Text = "Auto Load Mods";
             this.autoLoadModsToolStripMenuItem.CheckedChanged += new System.EventHandler(this.autoLoadModsToolStripMenuItem_CheckedChanged);
+            this.autoLoadModsToolStripMenuItem.Click += new System.EventHandler(this.autoLoadModsToolStripMenuItem_Click);
             // 
             // playSoundOnInjectToolStripMenuItem
             // 
@@ -143,8 +144,8 @@
             // updateToolStripMenuItem
             // 
             this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-            this.updateToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
-            this.updateToolStripMenuItem.Text = "Update";
+            this.updateToolStripMenuItem.Size = new System.Drawing.Size(80, 20);
+            this.updateToolStripMenuItem.Text = "Update DLL";
             this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
             // 
             // donateToolStripMenuItem
@@ -361,7 +362,7 @@
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Rocket Launcher 3.1";
+            this.Text = "Rocket Launcher 3.2";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.mainMenuStrip.ResumeLayout(false);

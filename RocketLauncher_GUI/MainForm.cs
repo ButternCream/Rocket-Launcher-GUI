@@ -73,7 +73,8 @@ namespace RocketLauncher_GUI
 
             //startup actions
             RLProcessMonitor.LookForProcess(); //do a game running check
-            CheckForUpdate(); //check for an update
+            CheckForUpdate(false); //check for an update
+            autoLoadModsTimer.Enabled = Properties.Settings.Default.AutoLoadMods; //Start auto load timer
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -162,7 +163,7 @@ namespace RocketLauncher_GUI
             }
         }
 
-        private void CheckForUpdate()
+        private void CheckForUpdate(bool buttonClick)
         {
             //determine manifest url
             string manifestUrl = useBetaChannelToolStripMenuItem.Checked ?  Properties.Resources.BetaVersionManifestURL : Properties.Resources.ReleaseVersionManifestURL;
@@ -190,10 +191,11 @@ namespace RocketLauncher_GUI
             //check if this is a new update
             if (version <= currentVersion && File.Exists(targetPath))
             {
-                var r = MessageBox.Show("Version is up to date.", "Updater", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                if (r == DialogResult.OK)
-                    return;
-            }
+                if (buttonClick)
+                    MessageBox.Show("DLL Versions up to date.", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);    
+                return;
+            }  
+                
             
 
             //we have a new update!
@@ -220,7 +222,6 @@ namespace RocketLauncher_GUI
             {
                 var webClient = new WebClient();
                 webClient.DownloadFileAsync(new Uri(targetUrl), targetPath);
-
                 //update the version
                 if (useBetaChannelToolStripMenuItem.Checked)
                 {
@@ -312,7 +313,7 @@ namespace RocketLauncher_GUI
             if (RLProcessMonitor.RocketLeagueProcess != null)
             {
                 var startTimeSpan = DateTime.Now - RLProcessMonitor.RocketLeagueProcess.StartTime;
-                if (startTimeSpan.Seconds > 15)
+                if (startTimeSpan.Seconds > 10)
                 {
                     AttemptInjection();
                 }
@@ -461,7 +462,7 @@ namespace RocketLauncher_GUI
 
         private void updateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CheckForUpdate();
+            CheckForUpdate(true);
         }
         #endregion
 
@@ -484,13 +485,14 @@ namespace RocketLauncher_GUI
             }
 
             //call updater
-            CheckForUpdate();
+            CheckForUpdate(false);
         }
 
         private void autoLoadModsToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
             autoLoadModsTimer.Enabled = autoLoadModsToolStripMenuItem.Checked;
             Properties.Settings.Default.AutoLoadMods = autoLoadModsToolStripMenuItem.Checked;
+            
         }
         #endregion
 
@@ -507,9 +509,16 @@ namespace RocketLauncher_GUI
         }
         #endregion
 
+    #region Butter's Stuff
         private void downloadPcapButton_Click(object sender, EventArgs e)
         {
             Process.Start("https://www.winpcap.org/install/bin/WinPcap_4_1_3.exe");
         }
+
+        private void autoLoadModsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            autoLoadModsToolStripMenuItem.Checked = !autoLoadModsToolStripMenuItem.Checked;
+        }
+        #endregion
     }
 }
