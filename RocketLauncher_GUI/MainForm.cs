@@ -89,6 +89,22 @@ namespace RocketLauncher_GUI
         }
 
         #region Utility functions
+
+        private bool IsInjected()
+        {
+            if (RLProcessMonitor.RocketLeagueProcess == null)
+                return false;
+
+            var modules = RLProcessMonitor.RocketLeagueProcess.Modules;
+            foreach (ProcessModule module in modules)
+            {
+                if (module.ModuleName == "RLModding.dll")
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         private void LoadSettings()
         {
             //this function is needed because menu strip items are
@@ -299,26 +315,20 @@ namespace RocketLauncher_GUI
                 injectStatusLabel.Text = "Injection Failed";
             }
 
-            var modules = RLProcessMonitor.RocketLeagueProcess.Modules;
-            foreach (ProcessModule module in modules)
+            if (IsInjected())
             {
-                if (module.ModuleName == "RLModding.dll")
+                logger.WriteLine("Injection succeeded");
+                dllInjectionVerified = true;
+                injectStatusLabel.Text = "Injected";
+
+                //play sound
+                if (playSoundOnInjectToolStripMenuItem.Checked && File.Exists(@"C:\Windows\Media\chimes.wav"))
                 {
-                    logger.WriteLine("Injection succeeded");
-                    dllInjectionVerified = true;
-                    injectStatusLabel.Text = "Injected";
-
-                    //play sound
-                    if (playSoundOnInjectToolStripMenuItem.Checked && File.Exists(@"C:\Windows\Media\chimes.wav"))
-                    {
-                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(@"C:\Windows\Media\chimes.wav");
-                        sound.Play();
-                    }
-
-                    break;
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(@"C:\Windows\Media\chimes.wav");
+                    sound.Play();
                 }
-            }
 
+            }
         }
 
         private void autoLoadModsTimer_Tick(object sender, EventArgs e)
@@ -345,6 +355,15 @@ namespace RocketLauncher_GUI
             {
                 MessageBox.Show("Please run the game before attempting to load mods.", "Injection Failed",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (IsInjected())
+            {
+                injectButton.Enabled = false;
+                injectStatusLabel.Text = "Injected";
+                dllInjectionVerified = true;
+                isDllInjected = true;
                 return;
             }
 
