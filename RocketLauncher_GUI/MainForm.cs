@@ -188,7 +188,13 @@ namespace RocketLauncher_GUI
             string targetUrl = useBetaChannelToolStripMenuItem.Checked ? Properties.Resources.BetaVersionDLLURL : Properties.Resources.ReleaseVersionDLLURL;
 
             //check if this is a new update
-            if (version <= currentVersion && File.Exists(targetPath)) return;
+            if (version <= currentVersion && File.Exists(targetPath))
+            {
+                var r = MessageBox.Show("Version is up to date.", "Updater", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (r == DialogResult.OK)
+                    return;
+            }
+            
 
             //we have a new update!
             var res = MessageBox.Show($"An update for the {targetDirectory} version has been found. Would you like to download it?", "Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -500,5 +506,10 @@ namespace RocketLauncher_GUI
                 RLProcessMonitor.RocketLeagueProcess.Kill();
         }
         #endregion
+
+        private void downloadPcapButton_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://www.winpcap.org/install/bin/WinPcap_4_1_3.exe");
+        }
     }
 }

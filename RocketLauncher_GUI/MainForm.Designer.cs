@@ -86,7 +86,7 @@
             this.startToolStripMenuItem,
             this.killToolStripMenuItem});
             this.rocketLeagueToolStripMenuItem.Name = "rocketLeagueToolStripMenuItem";
-            this.rocketLeagueToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
+            this.rocketLeagueToolStripMenuItem.Size = new System.Drawing.Size(96, 20);
             this.rocketLeagueToolStripMenuItem.Text = "Rocket League";
             // 
             // startToolStripMenuItem
@@ -117,7 +117,7 @@
             // 
             this.autoLoadModsToolStripMenuItem.Checked = global::RocketLauncher_GUI.Properties.Settings.Default.AutoLoadMods;
             this.autoLoadModsToolStripMenuItem.Name = "autoLoadModsToolStripMenuItem";
-            this.autoLoadModsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.autoLoadModsToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.autoLoadModsToolStripMenuItem.Text = "Auto Load Mods";
             this.autoLoadModsToolStripMenuItem.CheckedChanged += new System.EventHandler(this.autoLoadModsToolStripMenuItem_CheckedChanged);
             // 
@@ -127,7 +127,7 @@
             this.playSoundOnInjectToolStripMenuItem.CheckOnClick = true;
             this.playSoundOnInjectToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.playSoundOnInjectToolStripMenuItem.Name = "playSoundOnInjectToolStripMenuItem";
-            this.playSoundOnInjectToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.playSoundOnInjectToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.playSoundOnInjectToolStripMenuItem.Text = "Play Sound On Inject";
             this.playSoundOnInjectToolStripMenuItem.CheckedChanged += new System.EventHandler(this.playSoundOnInjectToolStripMenuItem_CheckedChanged);
             // 
@@ -136,7 +136,7 @@
             this.useBetaChannelToolStripMenuItem.Checked = global::RocketLauncher_GUI.Properties.Settings.Default.UseBetaVersion;
             this.useBetaChannelToolStripMenuItem.CheckOnClick = true;
             this.useBetaChannelToolStripMenuItem.Name = "useBetaChannelToolStripMenuItem";
-            this.useBetaChannelToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.useBetaChannelToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.useBetaChannelToolStripMenuItem.Text = "Use Beta Version";
             this.useBetaChannelToolStripMenuItem.CheckedChanged += new System.EventHandler(this.useBetaChannelToolStripMenuItem_CheckedChanged);
             // 
@@ -267,6 +267,7 @@
             this.downloadPcapButton.TabIndex = 0;
             this.downloadPcapButton.Text = "Download WinPcap";
             this.downloadPcapButton.UseVisualStyleBackColor = true;
+            this.downloadPcapButton.Click += new System.EventHandler(this.downloadPcapButton_Click);
             // 
             // tabPage3
             // 
