@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -40,10 +41,12 @@ namespace RocketLauncher_GUI
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            //set title
+            var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+            this.Text += $" {assemblyVersion.Major}.{assemblyVersion.Minor}";
+
             //verify installation
             bool installationCorrect = true;
-            if (!File.Exists("Release\\RLModding.dll") && !File.Exists("Beta\\RLModding.dll"))
-                installationCorrect = false;
             if (!File.Exists("Injector.dll"))
                 installationCorrect = false;
 
@@ -57,7 +60,7 @@ namespace RocketLauncher_GUI
                 return;
             }
 
-            //check if we're already running
+            //check if we're already running and close if we are
             var mutex = new Mutex(true, "RocketLauncher", out var mutexCreated);
             if (!mutexCreated)
             {
@@ -72,8 +75,9 @@ namespace RocketLauncher_GUI
             logger.WriteLine($"Initializing {this.Text}");
 
             //startup actions
+            LoadSettings();
             RLProcessMonitor.LookForProcess(); //do a game running check
-            CheckForUpdate(false); //check for an update
+            CheckForUpdate(); //check for an update
             autoLoadModsTimer.Enabled = Properties.Settings.Default.AutoLoadMods; //Start auto load timer
         }
 
@@ -85,12 +89,23 @@ namespace RocketLauncher_GUI
         }
 
         #region Utility functions
+        private void LoadSettings()
+        {
+            //this function is needed because menu strip items are
+            //stupid and keep generating CheckState properties
+            autoLoadModsToolStripMenuItem.Checked = Properties.Settings.Default.AutoLoadMods;
+            playSoundOnInjectToolStripMenuItem.Checked = Properties.Settings.Default.SoundNotif;
+            useBetaChannelToolStripMenuItem.Checked = Properties.Settings.Default.UseBetaVersion;
+        }
+
         private void AttemptInjection()
         {
+            logger.WriteLine("AttemptInjection()");
             bool injectionResult = useBetaChannelToolStripMenuItem.Checked ? Inject_Beta() : Inject();
 
             if (!injectionResult)
             {
+                logger.WriteLine("Injection failed due to !injectionResult");
                 injectStatusLabel.Text = "Injection Failed";
             }
             else
@@ -163,7 +178,7 @@ namespace RocketLauncher_GUI
             }
         }
 
-        private void CheckForUpdate(bool buttonClick)
+        private void CheckForUpdate(bool buttonClick = false)
         {
             //determine manifest url
             string manifestUrl = useBetaChannelToolStripMenuItem.Checked ?  Properties.Resources.BetaVersionManifestURL : Properties.Resources.ReleaseVersionManifestURL;
@@ -278,6 +293,7 @@ namespace RocketLauncher_GUI
             //check if we've been trying for too long
             if ((DateTime.Now - injectionStartTime).Seconds > 10)
             {
+                logger.WriteLine("Injection failed due to timeout");
                 injectButton.Enabled = true;
                 isDllInjected = false;
                 injectStatusLabel.Text = "Injection Failed";
@@ -288,6 +304,7 @@ namespace RocketLauncher_GUI
             {
                 if (module.ModuleName == "RLModding.dll")
                 {
+                    logger.WriteLine("Injection succeeded");
                     dllInjectionVerified = true;
                     injectStatusLabel.Text = "Injected";
 
@@ -337,6 +354,11 @@ namespace RocketLauncher_GUI
         #endregion
 
         #region Direct IP Control Events
+        private void downloadPcapButton_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://www.winpcap.org/install/bin/WinPcap_4_1_3.exe");
+        }
+
         private void runDirectIpButton_Click(object sender, EventArgs e)
         {
             //verify IP address
@@ -364,6 +386,7 @@ namespace RocketLauncher_GUI
             catch (Exception exc)
             {
                 MessageBox.Show("An error occurred trying to intercept Rocket League. Make sure of the following:\n1) WinPcap is installed\n2) This application has been run as an administrator", "Interception Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.WriteLine("Exception during intercept: " + exc.ToString());
             }
         }
         #endregion
@@ -485,7 +508,7 @@ namespace RocketLauncher_GUI
             }
 
             //call updater
-            CheckForUpdate(false);
+            CheckForUpdate();
         }
 
         private void autoLoadModsToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
@@ -506,18 +529,6 @@ namespace RocketLauncher_GUI
         {
             if (RLProcessMonitor.RocketLeagueProcess != null)
                 RLProcessMonitor.RocketLeagueProcess.Kill();
-        }
-        #endregion
-
-    #region Butter's Stuff
-        private void downloadPcapButton_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://www.winpcap.org/install/bin/WinPcap_4_1_3.exe");
-        }
-
-        private void autoLoadModsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            autoLoadModsToolStripMenuItem.Checked = !autoLoadModsToolStripMenuItem.Checked;
         }
         #endregion
     }
