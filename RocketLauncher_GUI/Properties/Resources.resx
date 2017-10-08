@@ -117,4 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BetaVersionDLLURL" xml:space="preserve">
+    <value>https://hack.fyi/rlmods/beta/RLModding_Beta.dll</value>
+  </data>
+  <data name="BetaVersionManifestURL" xml:space="preserve">
+    <value>https://hack.fyi/rlmods/beta/version.txt</value>
+  </data>
+  <data name="ReleaseVersionDLLURL" xml:space="preserve">
+    <value>https://hack.fyi/rlmods/release/RLModding.dll</value>
+  </data>
+  <data name="ReleaseVersionManifestURL" xml:space="preserve">
+    <value>https://hack.fyi/rlmods/release/version.txt</value>
+  </data>
+  <data name="UnderpassFilename" xml:space="preserve">
+    <value>Labs_Underpass_P.upk</value>
+  </data>
 </root>

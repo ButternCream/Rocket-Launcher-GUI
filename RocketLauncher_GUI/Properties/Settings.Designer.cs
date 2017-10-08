@@ -12,7 +12,7 @@ namespace RocketLauncher_GUI.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.1.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.3.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -20,6 +20,18 @@ namespace RocketLauncher_GUI.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SoundNotif {
+            get {
+                return ((bool)(this["SoundNotif"]));
+            }
+            set {
+                this["SoundNotif"] = value;
             }
         }
         
@@ -37,85 +49,49 @@ namespace RocketLauncher_GUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Path {
-            get {
-                return ((string)(this["Path"]));
-            }
-            set {
-                this["Path"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
-        public int DeviceIndex {
-            get {
-                return ((int)(this["DeviceIndex"]));
-            }
-            set {
-                this["DeviceIndex"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Workshop_Path {
-            get {
-                return ((string)(this["Workshop_Path"]));
-            }
-            set {
-                this["Workshop_Path"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Cooked_Path {
-            get {
-                return ((string)(this["Cooked_Path"]));
-            }
-            set {
-                this["Cooked_Path"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
-        public int Map_Index {
-            get {
-                return ((int)(this["Map_Index"]));
-            }
-            set {
-                this["Map_Index"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Sound {
+        public bool UseBetaVersion {
             get {
-                return ((bool)(this["Sound"]));
+                return ((bool)(this["UseBetaVersion"]));
             }
             set {
-                this["Sound"] = value;
+                this["UseBetaVersion"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsBeta {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string GamePath {
             get {
-                return ((bool)(this["IsBeta"]));
+                return ((string)(this["GamePath"]));
             }
             set {
-                this["IsBeta"] = value;
+                this["GamePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CookedPath {
+            get {
+                return ((string)(this["CookedPath"]));
+            }
+            set {
+                this["CookedPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WorkshopPath {
+            get {
+                return ((string)(this["WorkshopPath"]));
+            }
+            set {
+                this["WorkshopPath"] = value;
             }
         }
         
@@ -140,18 +116,6 @@ namespace RocketLauncher_GUI.Properties {
             }
             set {
                 this["ReleaseVersion"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool NoNotifyUpdate {
-            get {
-                return ((bool)(this["NoNotifyUpdate"]));
-            }
-            set {
-                this["NoNotifyUpdate"] = value;
             }
         }
     }

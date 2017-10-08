@@ -19,7 +19,7 @@ namespace RocketLauncher_GUI.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -57,6 +57,51 @@ namespace RocketLauncher_GUI.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://hack.fyi/rlmods/beta/RLModding_Beta.dll.
+        /// </summary>
+        internal static string BetaVersionDLLURL {
+            get {
+                return ResourceManager.GetString("BetaVersionDLLURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://hack.fyi/rlmods/beta/version.txt.
+        /// </summary>
+        internal static string BetaVersionManifestURL {
+            get {
+                return ResourceManager.GetString("BetaVersionManifestURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://hack.fyi/rlmods/release/RLModding.dll.
+        /// </summary>
+        internal static string ReleaseVersionDLLURL {
+            get {
+                return ResourceManager.GetString("ReleaseVersionDLLURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://hack.fyi/rlmods/release/version.txt.
+        /// </summary>
+        internal static string ReleaseVersionManifestURL {
+            get {
+                return ResourceManager.GetString("ReleaseVersionManifestURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Labs_Underpass_P.upk.
+        /// </summary>
+        internal static string UnderpassFilename {
+            get {
+                return ResourceManager.GetString("UnderpassFilename", resourceCulture);
             }
         }
     }
