@@ -1,9 +1,0 @@
-﻿D:\VS 2017\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(373,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-  Injector.cpp
-Injector.cpp(19): warning C4101: 'hLib': unreferenced local variable
-Injector.cpp(54): warning C4101: 'hLib': unreferenced local variable
-     Creating library D:\Taylors Repo\RLModding\Build\Injector.lib and object D:\Taylors Repo\RLModding\Build\Injector.exp
-  Generating code
-  All 3 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  Finished generating code
-  Injector.vcxproj -> D:\Taylors Repo\RLModding\Build\Injector.dll

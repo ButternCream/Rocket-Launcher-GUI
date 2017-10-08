@@ -1,29 +1,8 @@
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\Newtonsoft.Json.dll
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\PcapDotNet.Base.dll
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\PcapDotNet.Core.dll
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\PcapDotNet.Core.Extensions.dll
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\PcapDotNet.Packets.dll
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\Newtonsoft.Json.xml
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\PcapDotNet.Base.pdb
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\PcapDotNet.Base.xml
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\PcapDotNet.Core.pdb
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\PcapDotNet.Core.xml
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\PcapDotNet.Core.Extensions.pdb
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\PcapDotNet.Core.Extensions.xml
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\PcapDotNet.Packets.pdb
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\PcapDotNet.Packets.xml
-C:\Users\scott\Desktop\Rocket Launcher 3.X\Rocket Launcher.exe.config
-C:\Users\scott\Desktop\Rocket Launcher 3.X\Rocket Launcher.exe
-C:\Users\scott\Desktop\Rocket Launcher 3.X\Rocket Launcher.pdb
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\RocketLauncher_GUI.exe.config
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\RocketLauncher_GUI.exe
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\bin\Release\RocketLauncher_GUI.pdb
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\obj\Release\RocketLauncher_GUI.csprojResolveAssemblyReference.cache
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\obj\Release\RocketLauncher_GUI.MainForm.resources
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\obj\Release\RocketLauncher_GUI.Properties.Resources.resources
-C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\obj\Release\RocketLauncher_GUI.csproj.GenerateResource.Cache
 D:\Taylors Repo\RLModding\Build\Rocket Launcher.exe.config
 D:\Taylors Repo\RLModding\Build\Rocket Launcher.exe
 D:\Taylors Repo\RLModding\Build\Rocket Launcher.pdb
+C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\obj\Release\RocketLauncher_GUI.MainForm.resources
+C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\obj\Release\RocketLauncher_GUI.Properties.Resources.resources
+C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\obj\Release\RocketLauncher_GUI.csproj.GenerateResource.Cache
 C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\obj\Release\Rocket Launcher.exe
 C:\Users\scott\OneDrive\Documents\Visual Studio 2017\Projects\RocketLauncher_GUI\RocketLauncher_GUI\obj\Release\Rocket Launcher.pdb
