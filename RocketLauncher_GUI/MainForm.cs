@@ -33,6 +33,7 @@ namespace RocketLauncher_GUI
         private bool dllInjectionVerified = false;
         private DateTime injectionStartTime;
         private LogFile logger;
+        private bool initialized = false;
 
         public MainForm()
         {
@@ -41,9 +42,29 @@ namespace RocketLauncher_GUI
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            //ensure our CurrentDirectory is our executing assembly location
+            //this will correct errors caused by shorcuts and whatnot
+            Environment.CurrentDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+
             //set title
             var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
             this.Text += $" {assemblyVersion.Major}.{assemblyVersion.Minor}";
+
+            //check if we're already running and close if we are
+            var mutex = new Mutex(true, "RocketLauncher", out var mutexCreated);
+            if (!mutexCreated)
+            {
+                logger.WriteLine("Mutex already created. Shutting down. (An instance of Rocket Launcher is already running)");
+
+                mutex.Close();
+                Application.Exit();
+                return;
+            }
+
+            //create logger and start new log
+            logger = new LogFile("RL.log");
+            logger.Clear();
+            logger.WriteLine($"Initializing {this.Text}");
 
             //verify installation
             bool installationCorrect = true;
@@ -56,36 +77,33 @@ namespace RocketLauncher_GUI
                 MessageBox.Show(
                     "One or more required program files are missing. Please fully extract Rocket Launcher and try again.",
                     "Invalid Installation", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+
+                //log details before exiting
+                logger.WriteLine("Oh no! The Injector doesn't exist. Lets see some details that will help us diagnose how this happened");
+                logger.WriteLine($"The executing assembly is located in the directory {new DirectoryInfo(Assembly.GetExecutingAssembly().Location).Name}");
+                logger.WriteLine($"This directory contains {Directory.GetFiles(Environment.CurrentDirectory, "*.*", SearchOption.TopDirectoryOnly).Length - 1} other files");
+                logger.WriteLine("Well, we can't function without the injector, so that's all folks!");
+
                 Application.Exit();
                 return;
             }
-
-            //check if we're already running and close if we are
-            var mutex = new Mutex(true, "RocketLauncher", out var mutexCreated);
-            if (!mutexCreated)
-            {
-                mutex.Close();
-                Application.Exit();
-                return;
-            }
-
-            //create logger
-            logger = new LogFile("RL.log");
-            logger.Clear();
-            logger.WriteLine($"Initializing {this.Text}");
 
             //startup actions
             LoadSettings();
             RLProcessMonitor.LookForProcess(); //do a game running check
             CheckForUpdate(); //check for an update
-            autoLoadModsTimer.Enabled = Properties.Settings.Default.AutoLoadMods; //Start auto load timer
+            initialized = true;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             //save settings
-            logger.WriteLine("Saving settings");
-            Properties.Settings.Default.Save();
+            if(initialized)
+            {
+                logger.WriteLine("Saving settings");
+                Properties.Settings.Default.Save();
+            }
         }
 
         #region Utility functions
@@ -315,6 +333,7 @@ namespace RocketLauncher_GUI
                 injectStatusLabel.Text = "Injection Failed";
             }
 
+            //check if injection succeeded
             if (IsInjected())
             {
                 logger.WriteLine("Injection succeeded");
@@ -358,6 +377,7 @@ namespace RocketLauncher_GUI
                 return;
             }
 
+            //check if injected already
             if (IsInjected())
             {
                 injectButton.Enabled = false;
