@@ -35,11 +35,11 @@
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.killToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoLoadModsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.playSoundOnInjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.useBetaChannelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.donateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miscStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.workshopTexturesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.injectStatusLabel = new System.Windows.Forms.Label();
@@ -60,6 +60,11 @@
             this.processExistsTimer = new System.Windows.Forms.Timer(this.components);
             this.injectionVerifierTimer = new System.Windows.Forms.Timer(this.components);
             this.autoLoadModsTimer = new System.Windows.Forms.Timer(this.components);
+            this.dLLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.useBetaChannelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoLoadModsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.playSoundOnInjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenuStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -73,10 +78,11 @@
             this.rocketLeagueToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.updateToolStripMenuItem,
-            this.donateToolStripMenuItem});
+            this.donateToolStripMenuItem,
+            this.miscStripMenuItem1});
             this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.mainMenuStrip.Name = "mainMenuStrip";
-            this.mainMenuStrip.Size = new System.Drawing.Size(330, 24);
+            this.mainMenuStrip.Size = new System.Drawing.Size(364, 24);
             this.mainMenuStrip.TabIndex = 0;
             this.mainMenuStrip.Text = "menuStrip1";
             // 
@@ -86,63 +92,36 @@
             this.startToolStripMenuItem,
             this.killToolStripMenuItem});
             this.rocketLeagueToolStripMenuItem.Name = "rocketLeagueToolStripMenuItem";
-            this.rocketLeagueToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
+            this.rocketLeagueToolStripMenuItem.Size = new System.Drawing.Size(96, 20);
             this.rocketLeagueToolStripMenuItem.Text = "Rocket League";
             // 
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
             // killToolStripMenuItem
             // 
             this.killToolStripMenuItem.Name = "killToolStripMenuItem";
-            this.killToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.killToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.killToolStripMenuItem.Text = "Kill";
             this.killToolStripMenuItem.Click += new System.EventHandler(this.killToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.autoLoadModsToolStripMenuItem,
-            this.playSoundOnInjectToolStripMenuItem,
-            this.useBetaChannelToolStripMenuItem});
+            this.generalToolStripMenuItem,
+            this.dLLToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
-            // autoLoadModsToolStripMenuItem
-            // 
-            this.autoLoadModsToolStripMenuItem.CheckOnClick = true;
-            this.autoLoadModsToolStripMenuItem.Name = "autoLoadModsToolStripMenuItem";
-            this.autoLoadModsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.autoLoadModsToolStripMenuItem.Text = "Auto Load Mods";
-            this.autoLoadModsToolStripMenuItem.CheckedChanged += new System.EventHandler(this.autoLoadModsToolStripMenuItem_CheckedChanged);
-            // 
-            // playSoundOnInjectToolStripMenuItem
-            // 
-            this.playSoundOnInjectToolStripMenuItem.Checked = true;
-            this.playSoundOnInjectToolStripMenuItem.CheckOnClick = true;
-            this.playSoundOnInjectToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.playSoundOnInjectToolStripMenuItem.Name = "playSoundOnInjectToolStripMenuItem";
-            this.playSoundOnInjectToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.playSoundOnInjectToolStripMenuItem.Text = "Play Sound On Inject";
-            this.playSoundOnInjectToolStripMenuItem.CheckedChanged += new System.EventHandler(this.playSoundOnInjectToolStripMenuItem_CheckedChanged);
-            // 
-            // useBetaChannelToolStripMenuItem
-            // 
-            this.useBetaChannelToolStripMenuItem.CheckOnClick = true;
-            this.useBetaChannelToolStripMenuItem.Name = "useBetaChannelToolStripMenuItem";
-            this.useBetaChannelToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.useBetaChannelToolStripMenuItem.Text = "Use Beta Version";
-            this.useBetaChannelToolStripMenuItem.CheckedChanged += new System.EventHandler(this.useBetaChannelToolStripMenuItem_CheckedChanged);
-            // 
             // updateToolStripMenuItem
             // 
             this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-            this.updateToolStripMenuItem.Size = new System.Drawing.Size(78, 20);
+            this.updateToolStripMenuItem.Size = new System.Drawing.Size(80, 20);
             this.updateToolStripMenuItem.Text = "Update DLL";
             this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
             // 
@@ -153,6 +132,29 @@
             this.donateToolStripMenuItem.Text = "Donate";
             this.donateToolStripMenuItem.Click += new System.EventHandler(this.donateToolStripMenuItem_Click);
             // 
+            // miscStripMenuItem1
+            // 
+            this.miscStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.workshopTexturesToolStripMenuItem,
+            this.uModToolStripMenuItem});
+            this.miscStripMenuItem1.Name = "miscStripMenuItem1";
+            this.miscStripMenuItem1.Size = new System.Drawing.Size(44, 20);
+            this.miscStripMenuItem1.Text = "Misc";
+            // 
+            // workshopTexturesToolStripMenuItem
+            // 
+            this.workshopTexturesToolStripMenuItem.Name = "workshopTexturesToolStripMenuItem";
+            this.workshopTexturesToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.workshopTexturesToolStripMenuItem.Text = "Workshop Textures";
+            this.workshopTexturesToolStripMenuItem.Click += new System.EventHandler(this.workshopTexturesToolStripMenuItem_Click);
+            // 
+            // uModToolStripMenuItem
+            // 
+            this.uModToolStripMenuItem.Name = "uModToolStripMenuItem";
+            this.uModToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.uModToolStripMenuItem.Text = "uMod";
+            this.uModToolStripMenuItem.Click += new System.EventHandler(this.uModToolStripMenuItem_Click);
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
@@ -162,7 +164,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(330, 159);
+            this.tabControl1.Size = new System.Drawing.Size(364, 159);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
@@ -173,14 +175,14 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(322, 133);
+            this.tabPage1.Size = new System.Drawing.Size(356, 133);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Main";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // injectStatusLabel
             // 
-            this.injectStatusLabel.Location = new System.Drawing.Point(111, 71);
+            this.injectStatusLabel.Location = new System.Drawing.Point(142, 71);
             this.injectStatusLabel.Name = "injectStatusLabel";
             this.injectStatusLabel.Size = new System.Drawing.Size(100, 18);
             this.injectStatusLabel.TabIndex = 2;
@@ -190,7 +192,7 @@
             // injectButton
             // 
             this.injectButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.injectButton.Location = new System.Drawing.Point(111, 43);
+            this.injectButton.Location = new System.Drawing.Point(142, 43);
             this.injectButton.Name = "injectButton";
             this.injectButton.Size = new System.Drawing.Size(100, 25);
             this.injectButton.TabIndex = 1;
@@ -218,7 +220,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(322, 133);
+            this.tabPage2.Size = new System.Drawing.Size(356, 133);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Direct IP";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -226,7 +228,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 39);
+            this.label2.Location = new System.Drawing.Point(8, 42);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(61, 13);
             this.label2.TabIndex = 4;
@@ -236,13 +238,13 @@
             // 
             this.ipTextbox.Location = new System.Drawing.Point(75, 39);
             this.ipTextbox.Name = "ipTextbox";
-            this.ipTextbox.Size = new System.Drawing.Size(239, 20);
+            this.ipTextbox.Size = new System.Drawing.Size(270, 20);
             this.ipTextbox.TabIndex = 3;
             this.ipTextbox.Text = "127.0.0.1";
             // 
             // runDirectIpButton
             // 
-            this.runDirectIpButton.Location = new System.Drawing.Point(191, 100);
+            this.runDirectIpButton.Location = new System.Drawing.Point(222, 102);
             this.runDirectIpButton.Name = "runDirectIpButton";
             this.runDirectIpButton.Size = new System.Drawing.Size(123, 25);
             this.runDirectIpButton.TabIndex = 2;
@@ -279,14 +281,14 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(322, 133);
+            this.tabPage3.Size = new System.Drawing.Size(356, 133);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Map Swapper";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // mapRestoreButton
             // 
-            this.mapRestoreButton.Location = new System.Drawing.Point(128, 52);
+            this.mapRestoreButton.Location = new System.Drawing.Point(169, 52);
             this.mapRestoreButton.Name = "mapRestoreButton";
             this.mapRestoreButton.Size = new System.Drawing.Size(95, 23);
             this.mapRestoreButton.TabIndex = 4;
@@ -296,7 +298,7 @@
             // 
             // mapSwapButton
             // 
-            this.mapSwapButton.Location = new System.Drawing.Point(25, 52);
+            this.mapSwapButton.Location = new System.Drawing.Point(29, 52);
             this.mapSwapButton.Name = "mapSwapButton";
             this.mapSwapButton.Size = new System.Drawing.Size(95, 23);
             this.mapSwapButton.TabIndex = 3;
@@ -308,14 +310,14 @@
             // 
             this.mapListComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.mapListComboBox.FormattingEnabled = true;
-            this.mapListComboBox.Location = new System.Drawing.Point(25, 25);
+            this.mapListComboBox.Location = new System.Drawing.Point(29, 25);
             this.mapListComboBox.Name = "mapListComboBox";
-            this.mapListComboBox.Size = new System.Drawing.Size(198, 21);
+            this.mapListComboBox.Size = new System.Drawing.Size(235, 21);
             this.mapListComboBox.TabIndex = 2;
             // 
             // mapListRefreshButton
             // 
-            this.mapListRefreshButton.Location = new System.Drawing.Point(229, 23);
+            this.mapListRefreshButton.Location = new System.Drawing.Point(270, 23);
             this.mapListRefreshButton.Name = "mapListRefreshButton";
             this.mapListRefreshButton.Size = new System.Drawing.Size(75, 23);
             this.mapListRefreshButton.TabIndex = 1;
@@ -349,11 +351,46 @@
             this.autoLoadModsTimer.Interval = 5000;
             this.autoLoadModsTimer.Tick += new System.EventHandler(this.autoLoadModsTimer_Tick);
             // 
+            // dLLToolStripMenuItem
+            // 
+            this.dLLToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.useBetaChannelToolStripMenuItem});
+            this.dLLToolStripMenuItem.Name = "dLLToolStripMenuItem";
+            this.dLLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dLLToolStripMenuItem.Text = "DLL";
+            // 
+            // useBetaChannelToolStripMenuItem
+            // 
+            this.useBetaChannelToolStripMenuItem.Name = "useBetaChannelToolStripMenuItem";
+            this.useBetaChannelToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.useBetaChannelToolStripMenuItem.Text = "Use Beta Version";
+            // 
+            // generalToolStripMenuItem
+            // 
+            this.generalToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.autoLoadModsToolStripMenuItem,
+            this.playSoundOnInjectToolStripMenuItem});
+            this.generalToolStripMenuItem.Name = "generalToolStripMenuItem";
+            this.generalToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.generalToolStripMenuItem.Text = "General";
+            // 
+            // autoLoadModsToolStripMenuItem
+            // 
+            this.autoLoadModsToolStripMenuItem.Name = "autoLoadModsToolStripMenuItem";
+            this.autoLoadModsToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.autoLoadModsToolStripMenuItem.Text = "Auto Load Mods";
+            // 
+            // playSoundOnInjectToolStripMenuItem
+            // 
+            this.playSoundOnInjectToolStripMenuItem.Name = "playSoundOnInjectToolStripMenuItem";
+            this.playSoundOnInjectToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.playSoundOnInjectToolStripMenuItem.Text = "Play Sounds On Inject";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(330, 183);
+            this.ClientSize = new System.Drawing.Size(364, 183);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.mainMenuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -405,12 +442,17 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem killToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem autoLoadModsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem playSoundOnInjectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem useBetaChannelToolStripMenuItem;
         private System.Windows.Forms.Timer processExistsTimer;
         private System.Windows.Forms.Timer injectionVerifierTimer;
         private System.Windows.Forms.Timer autoLoadModsTimer;
+        private System.Windows.Forms.ToolStripMenuItem miscStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem workshopTexturesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem uModToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dLLToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem useBetaChannelToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generalToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem autoLoadModsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem playSoundOnInjectToolStripMenuItem;
     }
 }
 

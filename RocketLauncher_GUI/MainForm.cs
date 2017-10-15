@@ -526,6 +526,16 @@ namespace RocketLauncher_GUI
         {
             CheckForUpdate(true);
         }
+
+        private void workshopTexturesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://rocketleaguemods.com/mods/workshop-textures/");
+        }
+
+        private void uModToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/texmod/uMod_alpha_v2_r49.zip");
+        }
         #endregion
 
         #region "Settings" menu
