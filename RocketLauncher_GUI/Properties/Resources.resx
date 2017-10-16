@@ -123,6 +123,15 @@
   <data name="BetaVersionManifestURL" xml:space="preserve">
     <value>https://hack.fyi/rlmods/beta/version.txt</value>
   </data>
+  <data name="GuiBatchFile_Url" xml:space="preserve">
+    <value>https://hack.fyi/rlmods/gui/update.bat</value>
+  </data>
+  <data name="GuiManifest_Url" xml:space="preserve">
+    <value>https://hack.fyi/rlmods/gui/version.txt</value>
+  </data>
+  <data name="Gui_Url" xml:space="preserve">
+    <value>https://hack.fyi/rlmods/gui/Rocket Launcher.exe</value>
+  </data>
   <data name="ReleaseVersionDLLURL" xml:space="preserve">
     <value>https://hack.fyi/rlmods/release/RLModding.dll</value>
   </data>

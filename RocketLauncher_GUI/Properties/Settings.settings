@@ -26,5 +26,8 @@
     <Setting Name="ReleaseVersion" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)">2017-10-06</Value>
     </Setting>
+    <Setting Name="GuiVersion" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">2017-10-15</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

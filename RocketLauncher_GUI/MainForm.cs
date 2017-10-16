@@ -92,7 +92,7 @@ namespace RocketLauncher_GUI
             //startup actions
             LoadSettings();
             RLProcessMonitor.LookForProcess(); //do a game running check
-            CheckForUpdate(); //check for an update
+            CheckForUpdates(); //check for an update
             initialized = true;
         }
 
@@ -212,7 +212,8 @@ namespace RocketLauncher_GUI
             }
         }
 
-        private void CheckForUpdate(bool buttonClick = false)
+        // Still kept this for when they check "Use Beta Version"
+        private void CheckForDLLUpdate()
         {
             //determine manifest url
             string manifestUrl = useBetaChannelToolStripMenuItem.Checked ?  Properties.Resources.BetaVersionManifestURL : Properties.Resources.ReleaseVersionManifestURL;
@@ -239,9 +240,7 @@ namespace RocketLauncher_GUI
 
             //check if this is a new update
             if (version <= currentVersion && File.Exists(targetPath))
-            {
-                if (buttonClick)
-                    MessageBox.Show("DLL Versions up to date.", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);    
+            {   
                 return;
             }  
                 
@@ -256,7 +255,7 @@ namespace RocketLauncher_GUI
             if (!Directory.Exists(targetDirectory))
                 Directory.CreateDirectory(targetDirectory);
 
-            //cheeck if we should backup
+            //check if we should backup
             if (File.Exists(targetPath))
             {
                 //delete old backup if it exists
@@ -269,8 +268,10 @@ namespace RocketLauncher_GUI
             //download new
             try
             {
-                var webClient = new WebClient();
-                webClient.DownloadFileAsync(new Uri(targetUrl), targetPath);
+                using (var webClient = new WebClient())
+                {
+                    webClient.DownloadFileAsync(new Uri(targetUrl), targetPath);
+                }
                 //update the version
                 if (useBetaChannelToolStripMenuItem.Checked)
                 {
@@ -285,6 +286,148 @@ namespace RocketLauncher_GUI
                 logger.WriteLine("Exception during update download: " + exc.ToString());
             }
         }
+
+        // NEW General Updater, basically copy and pasted from previous functions
+        private void CheckForUpdates(bool buttonClick = false)
+        {
+            string gui_manifestUrl = Properties.Resources.GuiManifest_Url;
+            string dll_manifestUrl = useBetaChannelToolStripMenuItem.Checked ? Properties.Resources.BetaVersionManifestURL : Properties.Resources.ReleaseVersionManifestURL;
+            //get new version
+            DateTime gui_version;
+            DateTime dll_version;
+            try
+            {
+                gui_version = DateTime.Parse(((new WebClient()).DownloadString(gui_manifestUrl)));
+                dll_version = DateTime.Parse(((new WebClient()).DownloadString(dll_manifestUrl)));
+                logger.WriteLine($"Update, found version {gui_version.ToString()}");
+            }
+            catch (Exception e)
+            {
+                logger.WriteLine("Exception while getting update manifest: " + e.ToString());
+                return;
+            }
+
+            //Check if there is an update
+            DateTime currentGUIVersion = Properties.Settings.Default.GuiVersion;
+            DateTime currentDLLVersion = useBetaChannelToolStripMenuItem.Checked ? Properties.Settings.Default.BetaVersion : Properties.Settings.Default.ReleaseVersion;
+            bool update_gui = gui_version > currentGUIVersion;
+            bool update_dll = dll_version > currentDLLVersion;
+            if (update_gui || update_dll)
+            {
+                var res = MessageBox.Show($"A new version has been found. Would you like to download it?", "Updater", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (res == DialogResult.No)
+                    return;
+                // Check if GUI needs updating
+                if (update_gui)
+                {
+                    UpdateGUI();
+                    Properties.Settings.Default.GuiVersion = gui_version;
+                }
+                //Check if DLL needs updating
+                if (update_dll)
+                {
+                    UpdateDLL();
+                    if (useBetaChannelToolStripMenuItem.Checked)
+                        Properties.Settings.Default.BetaVersion = dll_version;
+                    else
+                        Properties.Settings.Default.ReleaseVersion = dll_version;
+                  
+                }
+
+                    
+            }
+            else
+            {
+                if (buttonClick)
+                    MessageBox.Show("Version up to date.", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            
+        }
+
+        // Update the GUI if its out of date
+        private void UpdateGUI()
+        {
+            string batchFile = Properties.Resources.GuiBatchFile_Url;
+            string targetUrl = Properties.Resources.Gui_Url;
+            string targetDirectory = "temp";
+            string targetPath = targetDirectory + "\\Rocket Launcher.exe";
+
+            //user wants to update, create temp directory for new exe
+            if (!Directory.Exists(targetDirectory))
+                Directory.CreateDirectory(targetDirectory);
+
+            //download new
+            try
+            {
+                using (var webClient = new WebClient())
+                {
+                    webClient.DownloadFile(new Uri(targetUrl), targetPath);
+                }
+            }
+            catch (Exception exc)
+            {
+                logger.WriteLine("Exception during update download: " + exc.ToString());
+            }
+
+            // Download and run updater.bat which,
+            // Closes instance of Rocket Launcher (if running)
+            // Copies and overwrites the old exe
+            // Deletes temp directory
+            // Starts Rocket Launcher
+            // Deletes itself
+            try
+            {
+                using (var webClient = new WebClient())
+                {
+                    webClient.DownloadFile(new Uri(batchFile), "updater.bat");
+                }
+                Process.Start("updater.bat");
+
+            }
+            catch (Exception exc)
+            {
+                logger.WriteLine("Exception during update download: " + exc.ToString());
+            }
+        }
+
+        // Update the DLL(s) if they're out of date, depending on if they are using beta or not
+        private void UpdateDLL()
+        {
+
+            //check against current version
+            string targetDirectory = useBetaChannelToolStripMenuItem.Checked ? "Beta" : "Release";
+            string targetPath = targetDirectory + "\\RLModding.dll";
+            string targetPathBackup = targetPath + ".old";
+            string targetUrl = useBetaChannelToolStripMenuItem.Checked ? Properties.Resources.BetaVersionDLLURL : Properties.Resources.ReleaseVersionDLLURL;
+
+            //user wants to update
+            if (!Directory.Exists(targetDirectory))
+                Directory.CreateDirectory(targetDirectory);
+
+            //check if we should backup
+            if (File.Exists(targetPath))
+            {
+                //delete old backup if it exists
+                if (File.Exists(targetPathBackup))
+                    File.Delete(targetPathBackup);
+                File.Copy(targetPath, targetPathBackup);
+                File.Delete(targetPath);
+            }
+
+            //download new
+            try
+            {
+                using (var webClient = new WebClient())
+                {
+                    webClient.DownloadFileAsync(new Uri(targetUrl), targetPath);
+                }  
+            }
+            catch (Exception exc)
+            {
+                logger.WriteLine("Exception during update download: " + exc.ToString());
+            }
+        }
+
         #endregion
 
         #region Timer Tick Events
@@ -524,7 +667,7 @@ namespace RocketLauncher_GUI
 
         private void updateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CheckForUpdate(true);
+            CheckForUpdates(true);
         }
 
         private void workshopTexturesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -557,7 +700,7 @@ namespace RocketLauncher_GUI
             }
 
             //call updater
-            CheckForUpdate();
+            CheckForDLLUpdate();
         }
 
         private void autoLoadModsToolStripMenuItem_CheckedChanged(object sender, EventArgs e)

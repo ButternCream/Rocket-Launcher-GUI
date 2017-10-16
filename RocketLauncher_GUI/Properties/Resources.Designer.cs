@@ -79,6 +79,33 @@ namespace RocketLauncher_GUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://hack.fyi/rlmods/gui/Rocket Launcher.exe.
+        /// </summary>
+        internal static string Gui_Url {
+            get {
+                return ResourceManager.GetString("Gui_Url", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://hack.fyi/rlmods/gui/update.bat.
+        /// </summary>
+        internal static string GuiBatchFile_Url {
+            get {
+                return ResourceManager.GetString("GuiBatchFile_Url", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://hack.fyi/rlmods/gui/version.txt.
+        /// </summary>
+        internal static string GuiManifest_Url {
+            get {
+                return ResourceManager.GetString("GuiManifest_Url", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://hack.fyi/rlmods/release/RLModding.dll.
         /// </summary>
         internal static string ReleaseVersionDLLURL {
