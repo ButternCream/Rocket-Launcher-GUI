@@ -371,6 +371,7 @@ namespace RocketLauncher_GUI
 
             // Download and run updater.bat which,
             // Closes instance of Rocket Launcher (if running)
+            // Creates temp directory and downloades the new exe
             // Copies and overwrites the old exe
             // Deletes temp directory
             // Starts Rocket Launcher
