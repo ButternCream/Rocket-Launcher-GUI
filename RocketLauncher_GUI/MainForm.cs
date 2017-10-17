@@ -691,7 +691,7 @@ namespace RocketLauncher_GUI
         private void useBetaChannelToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.UseBetaVersion = useBetaChannelToolStripMenuItem.Checked;
-
+             
             //notify the user
             if (isDllInjected)
             {
@@ -702,6 +702,7 @@ namespace RocketLauncher_GUI
 
             //call updater
             CheckForDLLUpdate();
+             
         }
 
         private void autoLoadModsToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
@@ -724,5 +725,6 @@ namespace RocketLauncher_GUI
                 RLProcessMonitor.RocketLeagueProcess.Kill();
         }
         #endregion
+
     }
 }

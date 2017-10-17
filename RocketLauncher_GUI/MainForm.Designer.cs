@@ -124,34 +124,40 @@
             this.autoLoadModsToolStripMenuItem,
             this.playSoundOnInjectToolStripMenuItem});
             this.generalToolStripMenuItem.Name = "generalToolStripMenuItem";
-            this.generalToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.generalToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.generalToolStripMenuItem.Text = "General";
             // 
             // autoLoadModsToolStripMenuItem
             // 
+            this.autoLoadModsToolStripMenuItem.CheckOnClick = true;
             this.autoLoadModsToolStripMenuItem.Name = "autoLoadModsToolStripMenuItem";
             this.autoLoadModsToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.autoLoadModsToolStripMenuItem.Text = "Auto Load Mods";
+            this.autoLoadModsToolStripMenuItem.CheckedChanged += new System.EventHandler(this.autoLoadModsToolStripMenuItem_CheckedChanged);
             // 
             // playSoundOnInjectToolStripMenuItem
             // 
+            this.playSoundOnInjectToolStripMenuItem.CheckOnClick = true;
             this.playSoundOnInjectToolStripMenuItem.Name = "playSoundOnInjectToolStripMenuItem";
             this.playSoundOnInjectToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.playSoundOnInjectToolStripMenuItem.Text = "Play Sounds On Inject";
+            this.playSoundOnInjectToolStripMenuItem.CheckedChanged += new System.EventHandler(this.playSoundOnInjectToolStripMenuItem_CheckedChanged);
             // 
             // dLLToolStripMenuItem
             // 
             this.dLLToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.useBetaChannelToolStripMenuItem});
             this.dLLToolStripMenuItem.Name = "dLLToolStripMenuItem";
-            this.dLLToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.dLLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.dLLToolStripMenuItem.Text = "DLL";
             // 
             // useBetaChannelToolStripMenuItem
             // 
+            this.useBetaChannelToolStripMenuItem.CheckOnClick = true;
             this.useBetaChannelToolStripMenuItem.Name = "useBetaChannelToolStripMenuItem";
             this.useBetaChannelToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.useBetaChannelToolStripMenuItem.Text = "Use Beta Version";
+            this.useBetaChannelToolStripMenuItem.CheckedChanged += new System.EventHandler(this.useBetaChannelToolStripMenuItem_CheckedChanged);
             // 
             // updateToolStripMenuItem
             // 
