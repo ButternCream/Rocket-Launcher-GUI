@@ -124,7 +124,7 @@
             this.autoLoadModsToolStripMenuItem,
             this.playSoundOnInjectToolStripMenuItem});
             this.generalToolStripMenuItem.Name = "generalToolStripMenuItem";
-            this.generalToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.generalToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.generalToolStripMenuItem.Text = "General";
             // 
             // autoLoadModsToolStripMenuItem
@@ -148,7 +148,7 @@
             this.dLLToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.useBetaChannelToolStripMenuItem});
             this.dLLToolStripMenuItem.Name = "dLLToolStripMenuItem";
-            this.dLLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dLLToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.dLLToolStripMenuItem.Text = "DLL";
             // 
             // useBetaChannelToolStripMenuItem
@@ -223,7 +223,7 @@
             // 
             // injectStatusLabel
             // 
-            this.injectStatusLabel.Location = new System.Drawing.Point(125, 71);
+            this.injectStatusLabel.Location = new System.Drawing.Point(120, 71);
             this.injectStatusLabel.Name = "injectStatusLabel";
             this.injectStatusLabel.Size = new System.Drawing.Size(100, 18);
             this.injectStatusLabel.TabIndex = 2;
@@ -233,7 +233,7 @@
             // injectButton
             // 
             this.injectButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.injectButton.Location = new System.Drawing.Point(125, 43);
+            this.injectButton.Location = new System.Drawing.Point(120, 43);
             this.injectButton.Name = "injectButton";
             this.injectButton.Size = new System.Drawing.Size(100, 25);
             this.injectButton.TabIndex = 1;

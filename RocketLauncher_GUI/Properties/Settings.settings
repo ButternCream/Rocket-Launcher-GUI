@@ -21,13 +21,13 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="BetaVersion" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)">2017-10-06</Value>
+      <Value Profile="(Default)">2017-10-31</Value>
     </Setting>
     <Setting Name="ReleaseVersion" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)">2017-10-06</Value>
+      <Value Profile="(Default)">2017-10-31</Value>
     </Setting>
     <Setting Name="GuiVersion" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)">2017-10-15</Value>
+      <Value Profile="(Default)">2017-10-31</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -97,7 +97,7 @@ namespace RocketLauncher_GUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2017-10-06")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2017-10-31")]
         public global::System.DateTime BetaVersion {
             get {
                 return ((global::System.DateTime)(this["BetaVersion"]));
@@ -109,7 +109,7 @@ namespace RocketLauncher_GUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2017-10-06")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2017-10-31")]
         public global::System.DateTime ReleaseVersion {
             get {
                 return ((global::System.DateTime)(this["ReleaseVersion"]));
@@ -121,7 +121,7 @@ namespace RocketLauncher_GUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2017-10-15")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2017-10-31")]
         public global::System.DateTime GuiVersion {
             get {
                 return ((global::System.DateTime)(this["GuiVersion"]));

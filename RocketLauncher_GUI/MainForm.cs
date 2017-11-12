@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Globalization;
 
 namespace RocketLauncher_GUI
 {
@@ -65,6 +66,11 @@ namespace RocketLauncher_GUI
             logger = new LogFile("RL.log");
             logger.Clear();
             logger.WriteLine($"Initializing {this.Text}");
+            logger.WriteLine($"Current GUI Version {Properties.Settings.Default.GuiVersion}");
+            if (useBetaChannelToolStripMenuItem.Checked)
+                logger.WriteLine($"Current Beta DLL Version {Properties.Settings.Default.BetaVersion}");
+            else
+                logger.WriteLine($"Current Release DLL Version {Properties.Settings.Default.ReleaseVersion}");
 
             //verify installation
             bool installationCorrect = true;
@@ -222,7 +228,7 @@ namespace RocketLauncher_GUI
             DateTime version;
             try
             {
-                version = DateTime.Parse(((new WebClient()).DownloadString(manifestUrl)));
+                version = DateTime.ParseExact(((new WebClient()).DownloadString(manifestUrl)), "MM/dd/yyyy", CultureInfo.InvariantCulture);
                 logger.WriteLine($"CheckForUpdate, found version {version.ToString()}, beta version? {useBetaChannelToolStripMenuItem.Checked.ToString()}");
             }
             catch (Exception e)
@@ -297,8 +303,8 @@ namespace RocketLauncher_GUI
             DateTime dll_version;
             try
             {
-                gui_version = DateTime.Parse(((new WebClient()).DownloadString(gui_manifestUrl)));
-                dll_version = DateTime.Parse(((new WebClient()).DownloadString(dll_manifestUrl)));
+                gui_version = DateTime.ParseExact(((new WebClient()).DownloadString(gui_manifestUrl)), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                dll_version = DateTime.ParseExact(((new WebClient()).DownloadString(dll_manifestUrl)), "MM/dd/yyyy", CultureInfo.InvariantCulture);
                 logger.WriteLine($"Update, found version {gui_version.ToString()}");
             }
             catch (Exception e)
