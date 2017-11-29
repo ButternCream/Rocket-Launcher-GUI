@@ -3,7 +3,7 @@ The new GUI for Rocket Launcher
 
 *Legacy (Old) Version: https://github.com/ButternCream/Legacy-Rocket-Launcher-GUI*
 
-### Current Version: 3.1
+### Current Version: 3.4
 
 *This repo is **only** for the **GUI interface** of Rocket Launcher.*
 
